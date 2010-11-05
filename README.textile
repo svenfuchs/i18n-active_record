@@ -1,0 +1,6 @@
+h1. I18n::Backend::ActiveRecord
+
+This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n":http://github.com/svenfuchs/i18n.
+
+If you are interested in maintaining this repository, please drop me a note!
+
