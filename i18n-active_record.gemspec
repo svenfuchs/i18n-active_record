@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 $:.unshift File.expand_path('../lib', __FILE__)
-require 'i18n_active_record/version'
+require 'i18n/active_record/version'
 
 Gem::Specification.new do |s|
   s.name         = "i18n-active_record"
