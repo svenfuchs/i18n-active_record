@@ -2,5 +2,74 @@ h1. I18n::Backend::ActiveRecord
 
 This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n":http://github.com/svenfuchs/i18n.
 
-If you are interested in maintaining this repository, please drop me a note!
+h2. Installation
+
+For Bundler put the following in your Gemfile:
+
+<pre>
+  gem 'i18n-active_record',
+      :git => 'git://github.com/svenfuchs/i18n-active_record.git',
+      :require => 'i18n/active_record'
+</pre>
+
+Next create a active record model named @Translation@ with the Rails Generator.
+Your migration should look like this:
+
+<pre>
+  class CreateTranslations < ActiveRecord::Migration
+    def self.up
+      create_table :translations do |t|
+        t.string :locale
+        t.string :key
+        t.text   :value
+        t.text   :interpolations
+        t.boolean :is_proc, :default => false
+
+        t.timestamps
+      end
+    end
+
+    def self.down
+      drop_table :translations
+    end
+  end
+</pre>
+
+With this translation model you will be able to manage your translation, and add new translations or languages through
+it.
+
+To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new file in *config/initializers* named *locale.rb*.
+
+A simple configuration for your locale.rb could look like this:
+
+<pre>
+  I18n.backend = I18n::Backend::Database.new
+</pre>
+
+A more adavanced example (Thanks Moritz), which uses YAML files and ActiveRecord for lookups:
+
+<pre>
+  I18n.backend = I18n::Backend::ActiveRecord.new
+
+  I18n::Backend::ActiveRecord.send(:include, I18n::Backend::Memoize)
+  I18n::Backend::ActiveRecord.send(:include, I18n::Backend::Flatten)
+  I18n::Backend::Simple.send(:include, I18n::Backend::Memoize)
+  I18n::Backend::Simple.send(:include, I18n::Backend::Pluralization)
+
+  I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Simple.new, I18n.backend)
+</pre>
+
+h2. Usage
+
+You can now use @I18n.t('Your String')@ to lookup translations in the database.
+
+h2. Maintainers
+
+* Sven Fuchs
+
+h2. Contributors
+
+* Moritz Lawtischka (Thanks for testing it)
+* Max Schulze
+
 
