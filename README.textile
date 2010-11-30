@@ -67,9 +67,4 @@ h2. Maintainers
 
 * Sven Fuchs
 
-h2. Contributors
-
-* Moritz Lawtischka (Thanks for testing it)
-* Max Schulze
-
 
