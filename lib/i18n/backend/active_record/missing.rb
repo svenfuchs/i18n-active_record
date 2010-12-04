@@ -41,7 +41,7 @@ module I18n
           key = normalize_flat_keys(locale, key, scope, separator)
 
           unless ActiveRecord::Translation.locale(locale).lookup(key).exists?
-            interpolations = options.keys - Base::RESERVED_KEYS
+            interpolations = options.keys - I18n::RESERVED_KEYS
             keys = count ? I18n.t('i18n.plural.keys', :locale => locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
             keys.each { |key| store_default_translation(locale, key, interpolations) }
           end
