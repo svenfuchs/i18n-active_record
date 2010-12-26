@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.summary      = "[summary]"
   s.description  = "[description]"
 
-  s.files        = `git ls-files app lib`.split("\n")
+  s.files        = Dir.glob("{ci,lib,test}/**/**") + %w(MIT-LICENSE README.textile Rakefile)
   s.platform     = Gem::Platform::RUBY
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
