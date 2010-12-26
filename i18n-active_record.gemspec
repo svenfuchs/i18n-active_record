@@ -16,4 +16,6 @@ Gem::Specification.new do |s|
   s.platform     = Gem::Platform::RUBY
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
+
+  s.add_dependency 'i18n', '>= 0.5.0'
 end
