@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors      = ["Sven Fuchs"]
   s.email        = "svenfuchs@artweb-design.de"
   s.homepage     = "http://github.com/svenfuchs/i18n-active_record"
-  s.summary      = "[summary]"
-  s.description  = "[description]"
+  s.summary      = "I18n ActiveRecord backend"
+  s.description  = "I18n ActiveRecord backend. Allows to store translations in a database using ActiveRecord, e.g. for providing a web-interface for managing translations."
 
   s.files        = Dir.glob("{ci,lib,test}/**/**") + %w(MIT-LICENSE README.textile Rakefile)
   s.platform     = Gem::Platform::RUBY
