@@ -36,7 +36,11 @@ module I18n
           if result.empty?
             nil
           elsif result.first.key == key
-            result.first.value
+            if result.first.value.respond_to?(:deep_symbolize_keys)
+              result.first.value.deep_symbolize_keys
+            else
+              result.first.value
+            end
           else
             chop_range = (key.size + FLATTEN_SEPARATOR.size)..-1
             result = result.inject({}) do |hash, r|
