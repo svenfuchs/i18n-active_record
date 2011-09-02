@@ -43,7 +43,7 @@ To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new 
 A simple configuration for your locale.rb could look like this:
 
 <pre>
-  I18n.backend = I18n::Backend::Database.new
+  I18n.backend = I18n::Backend::ActiveRecord.new
 </pre>
 
 A more adavanced example (Thanks Moritz), which uses YAML files and ActiveRecord for lookups:
