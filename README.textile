@@ -50,6 +50,7 @@ A simple configuration for your locale.rb could look like this:
 A more adavanced example (Thanks Moritz), which uses YAML files and ActiveRecord for lookups:
 
 <pre>
+  require 'i18n/backend/active_record'
   I18n.backend = I18n::Backend::ActiveRecord.new
 
   I18n::Backend::ActiveRecord.send(:include, I18n::Backend::Memoize)
