@@ -54,7 +54,15 @@ module I18n
         end
 
         def translate(locale, key, options = {})
-          super
+          # Support throw/catch for MissingTranslation (i18n 0.6.0) 
+          result = catch(:exception) do
+            super
+          end
+          if result.is_a?(I18n::MissingTranslation)
+            self.store_default_translations(locale, key, options)
+            throw(:exception, result)
+          end
+          result
         rescue I18n::MissingTranslationData => e
           self.store_default_translations(locale, key, options)
           raise e
