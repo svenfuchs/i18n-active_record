@@ -15,6 +15,26 @@ module I18n
     #     t.boolean :is_proc, :default => false
     #   end
     #
+
+
+    # 2012-03-10 'key' is a reserved keyword in MySQL 5 so we create the table
+    # like this:
+    # 
+    #   create_table :translations do |t|
+    #     t.string :locale
+    #     t.string :thekey
+    #     t.text   :value
+    #     t.text   :interpolations
+    #     t.boolean :is_proc, :default => false
+    #   end
+    #
+    # and in our model we alias key alias_attribute :key, :thekey
+    #
+    #also rails 3 scoping
+    #
+
+
+    #
     # This model supports to named scopes :locale and :lookup. The :locale
     # scope simply adds a condition for a given locale:
     #
@@ -55,26 +75,27 @@ module I18n
         serialize :value
         serialize :interpolations, Array
 
+        alias_attribute :key, :thekey
+
+        scope :locale, lambda { |locale|
+          where('locale = ? ', locale.to_s)
+        }
+
+        scope :lookup, lambda { |keys, *separator|
+          keys = Array(keys).map! { |key| key.to_s }
+
+          unless separator.empty?
+            warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
+              "You can change the internal separator by overwriting FLATTEN_SEPARATOR."
+          end
+
+          namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
+          where("thekey IN (?) OR thekey LIKE ?", keys, namespace)
+        }
+
         class << self
-          def locale(locale)
-            scoped(:conditions => { :locale => locale.to_s })
-          end
-
-          def lookup(keys, *separator)
-            column_name = connection.quote_column_name('key')
-            keys = Array(keys).map! { |key| key.to_s }
-
-            unless separator.empty?
-              warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
-                "You can change the internal separator by overwriting FLATTEN_SEPARATOR."
-            end
-
-            namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
-            scoped(:conditions => ["#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace])
-          end
-
           def available_locales
-            Translation.find(:all, :select => 'DISTINCT locale').map { |t| t.locale.to_sym }
+            Translation.select(:locale).uniq.map { |t| t.locale.to_sym }
           end
         end
 
