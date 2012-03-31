@@ -62,7 +62,7 @@ module I18n
 
           def lookup(keys, *separator)
             column_name = connection.quote_column_name('key')
-            keys = Array(keys).map! { |key| key.to_s }
+            keys = Array(keys).map { |key| key.to_s }
 
             unless separator.empty?
               warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
@@ -74,7 +74,7 @@ module I18n
           end
 
           def available_locales
-            Translation.find(:all, :select => 'DISTINCT locale').map { |t| t.locale.to_sym }
+            Translation.select('DISTINCT locale').all.map { |t| t.locale.to_sym }
           end
         end
 
@@ -84,7 +84,7 @@ module I18n
 
         def value
           value = read_attribute(:value)
-          if is_proc
+          if is_proc?
             Kernel.eval(value)
           elsif value == FALSY_CHAR
             false
