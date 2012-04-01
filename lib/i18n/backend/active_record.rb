@@ -42,6 +42,10 @@ module I18n
             end
             result.deep_symbolize_keys
           end
+
+        rescue ::ActiveRecord::StatementInvalid
+          # is the translations table missing?
+          nil
         end
 
         # For a key :'foo.bar.baz' return ['foo', 'foo.bar', 'foo.bar.baz']
