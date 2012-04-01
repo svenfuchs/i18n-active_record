@@ -13,30 +13,12 @@ For Bundler put the following in your Gemfile:
       :require => 'i18n/active_record'
 </pre>
 
-Next create a active record model named @Translation@ with the Rails Generator.
-Your migration should look like this:
+This gem can generate a migration to create a database table named @translations@, which will store the localized strings.
 
 <pre>
-  class CreateTranslations < ActiveRecord::Migration
-    def self.up
-      create_table :translations do |t|
-        t.string :locale
-        t.string :key
-        t.text   :value
-        t.text   :interpolations
-        t.boolean :is_proc, :default => false
-
-        t.timestamps
-      end
-    end
-
-    def self.down
-      drop_table :translations
-    end
-  end
+  rails g i18n:active_record:install
+  rake db:migrate
 </pre>
-
-With this translation model you will be able to manage your translation, and add new translations or languages through it.
 
 To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new file in *config/initializers* named *locale.rb*.
 
