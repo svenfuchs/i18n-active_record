@@ -49,7 +49,7 @@ module I18n
         TRUTHY_CHAR = "\001"
         FALSY_CHAR = "\002"
 
-        set_table_name 'translations'
+        set.table_name = 'translations'
         attr_protected :is_proc, :interpolations
 
         serialize :value
@@ -57,12 +57,12 @@ module I18n
 
         class << self
           def locale(locale)
-            scoped(:conditions => { :locale => locale.to_s })
+            where(:locale => locale.to_s)
           end
 
           def lookup(keys, *separator)
             column_name = connection.quote_column_name('key')
-            keys = Array(keys).map! { |key| key.to_s }
+            keys = Array(keys).map!(&:to_s)
 
             unless separator.empty?
               warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
@@ -70,11 +70,11 @@ module I18n
             end
 
             namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
-            scoped(:conditions => ["#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace])
+            where("#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace)
           end
 
           def available_locales
-            Translation.find(:all, :select => 'DISTINCT locale').map { |t| t.locale.to_sym }
+            Translation.select('DISTINCT locale').map { |t| t.locale.to_sym }
           end
         end
 
