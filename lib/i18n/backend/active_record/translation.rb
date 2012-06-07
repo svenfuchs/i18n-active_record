@@ -49,7 +49,7 @@ module I18n
         TRUTHY_CHAR = "\001"
         FALSY_CHAR = "\002"
 
-        set_table_name 'translations'
+        set.table_name = 'translations'
         attr_protected :is_proc, :interpolations
 
         serialize :value
