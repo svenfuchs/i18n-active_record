@@ -18,7 +18,7 @@ module I18n
     # This model supports to named scopes :locale and :lookup. The :locale
     # scope simply adds a condition for a given locale:
     #
-    #   I18n::Backend::ActiveRecord::Translation.locale(:en).all
+    #   I18n::Backend::ActiveRecord::Translation.locale(:en).to_a
     #   # => all translation records that belong to the :en locale
     #
     # The :lookup scope adds a condition for looking up all translations
@@ -74,7 +74,7 @@ module I18n
           end
 
           def available_locales
-            Translation.select('DISTINCT locale').all.map { |t| t.locale.to_sym }
+            Translation.select('DISTINCT locale').to_a.map { |t| t.locale.to_sym }
           end
         end
 
