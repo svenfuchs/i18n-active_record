@@ -49,6 +49,8 @@ module I18n
         TRUTHY_CHAR = "\001"
         FALSY_CHAR = "\002"
 
+        self.logger = nil
+
         self.table_name = 'translations'
         attr_accessible :locale, :key, :value
 
