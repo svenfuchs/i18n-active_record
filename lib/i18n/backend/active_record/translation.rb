@@ -58,12 +58,12 @@ module I18n
 
         class << self
           def locale(locale)
-            scoped(:conditions => { :locale => locale.to_s })
+            scoped conditions: { locale: locale.to_s }
           end
 
           def lookup(keys, *separator)
             column_name = connection.quote_column_name('key')
-            keys = Array(keys).map { |key| key.to_s }
+            keys = Array(keys).map(&:to_s)
 
             unless separator.empty?
               warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
@@ -71,11 +71,11 @@ module I18n
             end
 
             namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
-            scoped(:conditions => ["#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace])
+            scoped conditions: ["#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace]
           end
 
           def available_locales
-            Translation.select('DISTINCT locale').all.map { |t| t.locale.to_sym }
+            Translation.pluck('DISTINCT locale').map(&:to_sym)
           end
         end
 
@@ -85,24 +85,16 @@ module I18n
 
         def value
           value = read_attribute(:value)
-          if is_proc?
-            Kernel.eval(value)
-          elsif value == FALSY_CHAR
-            false
-          elsif value == TRUTHY_CHAR
-            true
-          else
-            value
-          end
+          return Kernel.eval(value) if is_proc?
+          return false if value == FALSY_CHAR
+          return true if value == TRUTHY_CHAR
+          value
         end
 
         def value=(value)
-          if value === false
-            value = FALSY_CHAR
-          elsif value === true
-            value = TRUTHY_CHAR
-          end
-
+          value = FALSY_CHAR if value === false
+          value = TRUTHY_CHAR if value === true
+          
           write_attribute(:value, value)
         end
       end
