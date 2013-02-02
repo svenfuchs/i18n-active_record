@@ -50,6 +50,7 @@ module I18n
         FALSY_CHAR = "\002"
 
         self.table_name = 'translations'
+        self.logger = nil
         attr_accessible :locale, :key, :value
 
         serialize :value
