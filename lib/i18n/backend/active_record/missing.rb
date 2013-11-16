@@ -56,7 +56,7 @@ module I18n
         def translate(locale, key, options = {})
           translation = super
         ensure
-          self.store_default_translations(locale, key) unless translation
+          self.store_default_translations(locale, key, options) unless translation
         end
       end
     end
