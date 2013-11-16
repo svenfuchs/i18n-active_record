@@ -54,10 +54,9 @@ module I18n
         end
 
         def translate(locale, key, options = {})
-          super
-        rescue I18n::MissingTranslationData => e
-          self.store_default_translations(locale, key, options)
-          raise e
+          translation = super
+        ensure
+          self.store_default_translations(locale, key) unless translation
         end
       end
     end
