@@ -39,9 +39,19 @@ module I18n
           count, scope, default, separator = options.values_at(:count, :scope, :default, :separator)
           separator ||= I18n.default_separator
           key = normalize_flat_keys(locale, key, scope, separator)
+          interpolations = options.keys - I18n::RESERVED_KEYS
 
+          if I18n::available_locales.any?
+            I18n::available_locales.each do |a_locale|
+              store_if_not_exists(a_locale, key, interpolations)
+            end
+          else
+            store_if_not_exists(locale, key, interpolations)
+          end
+        end
+
+        def store_if_not_exists(locale, key, interpolations)
           unless ActiveRecord::Translation.locale(locale).lookup(key).exists?
-            interpolations = options.keys - I18n::RESERVED_KEYS
             keys = count ? I18n.t('i18n.plural.keys', :locale => locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
             keys.each { |key| store_default_translation(locale, key, interpolations) }
           end
