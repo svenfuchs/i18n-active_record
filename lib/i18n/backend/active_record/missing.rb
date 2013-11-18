@@ -43,14 +43,14 @@ module I18n
 
           if I18n::available_locales.any?
             I18n::available_locales.each do |a_locale|
-              store_if_not_exists(a_locale, key, interpolations)
+              store_if_not_exists(a_locale, key, interpolations, count)
             end
           else
-            store_if_not_exists(locale, key, interpolations)
+            store_if_not_exists(locale, key, interpolations, count)
           end
         end
 
-        def store_if_not_exists(locale, key, interpolations)
+        def store_if_not_exists(locale, key, interpolations, count)
           unless ActiveRecord::Translation.locale(locale).lookup(key).exists?
             keys = count ? I18n.t('i18n.plural.keys', :locale => locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
             keys.each { |key| store_default_translation(locale, key, interpolations) }
