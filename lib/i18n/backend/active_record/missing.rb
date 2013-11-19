@@ -42,7 +42,7 @@ module I18n
 
           unless ActiveRecord::Translation.locale(locale).lookup(key).exists?
             interpolations = options.keys - I18n::RESERVED_KEYS
-            keys = count ? I18n.t('i18n.plural.keys', :locale => locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
+            keys = count ? get_plurals(locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
             keys.each { |key| store_default_translation(locale, key, interpolations) }
           end
         end
@@ -59,6 +59,17 @@ module I18n
           self.store_default_translations(locale, key, options)
           raise e
         end
+
+        private
+          # get plural rules or use English rules as default:
+          def get_plurals(locale)
+            plurals = I18n.t('i18n.plural.keys', :locale => locale)
+            # if no rules found, plurals is a string "translation missing...."
+            if plurals.is_a?(String)
+              plurals = [:zero, :one, :other]
+            end
+            plurals
+          end
       end
     end
   end
