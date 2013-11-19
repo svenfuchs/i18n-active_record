@@ -40,6 +40,11 @@ module I18n
           separator ||= I18n.default_separator
           key = normalize_flat_keys(locale, key, scope, separator)
 
+          # if already memoized, then a record already exists.
+          if @memoized_lookup and @memoized_lookup[locale.to_sym].keys.include? key.to_sym
+            return
+          end
+
           unless ActiveRecord::Translation.locale(locale).lookup(key).exists?
             interpolations = options.keys - I18n::RESERVED_KEYS
             keys = count ? I18n.t('i18n.plural.keys', :locale => locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
