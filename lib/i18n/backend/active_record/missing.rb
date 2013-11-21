@@ -44,12 +44,16 @@ module I18n
             interpolations = options.keys - I18n::RESERVED_KEYS
             keys = count ? I18n.t('i18n.plural.keys', :locale => locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
             keys.each { |key| store_default_translation(locale, key, interpolations) }
+
+            # if memoization is included, this refreshes the hash to get new values just stored
+            try(:reload!)
           end
         end
 
         def store_default_translation(locale, key, interpolations)
           translation = ActiveRecord::Translation.new :locale => locale.to_s, :key => key
           translation.interpolations = interpolations
+          translation.value = get_value_from_simple_backend(locale, key)
           translation.save
         end
 
@@ -59,6 +63,18 @@ module I18n
           self.store_default_translations(locale, key, options)
           raise e
         end
+
+        private
+          # Check if this backend is chainning with simple
+          # then try to get value from its hash.
+          def get_value_from_simple_backend(locale, key)
+            if I18n.backend.class == Chain &&
+              I18n.backend.backends.last.class == Simple
+              I18n.backend.backends.last.send(:lookup, locale, key)
+            else
+              nil
+            end
+          end
       end
     end
   end
