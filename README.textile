@@ -1,3 +1,15 @@
+*NOTE* This is my fork of svenfuchs/i18n-active_record (https://github.com/svenfuchs/i18n-active_record) which seemed abandoned at the time I created this fork, with issues and pull request not being addressed for months/years.
+I have been sending pull requests with the fixes I have done, but untill they are merged, I keep my updated branch at 'latest_stable' and my forked gem can be found in RubyGems.org https://rubygems.org/gems/chipairon-i18n-active_record
+
+To reference it in your Gemfile:
+
+<pre>
+  gem 'chipairon-i18n-active_record'
+</pre>
+
+I am using this gem as a component for an engine with web administration for translations: i18nline (https://github.com/elpulgardelpanda/i18nline-rails)
+
+
 h1. I18n::Backend::ActiveRecord
 
 This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n":http://github.com/svenfuchs/i18n.
