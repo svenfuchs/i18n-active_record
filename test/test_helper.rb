@@ -1,14 +1,67 @@
-require 'test_setup'
+require 'rubygems'
+require 'minitest/autorun'
 
-I18n::Tests.parse_options!
+# Do not load the i18n gem from libraries like active_support.
+#
+# This is required for testing against Rails 2.3 because active_support/vendor.rb#24 tries
+# to load I18n using the gem method. Instead, we want to test the local library of course.
+alias :gem_for_ruby_19 :gem # for 1.9. gives a super ugly seg fault otherwise
+def gem(gem_name, *version_requirements)
+  gem_name =='i18n' ? puts("skipping loading the i18n gem ...") : super
+end
+
 require 'bundler/setup'
+require 'i18n'
+require 'mocha'
+require 'test_declarative'
+
+module I18n
+  module Tests
+    class << self
+      def setup_active_record
+        begin
+          require 'active_record'
+          ActiveRecord::Base.connection
+          true
+        rescue LoadError => e
+          puts "can't use ActiveRecord backend because: #{e.message}"
+        rescue ActiveRecord::ConnectionNotEstablished
+          require 'i18n/backend/active_record'
+          require 'i18n/backend/active_record/store_procs'
+          connect_active_record
+          true
+        end
+      end
+
+      def connect_active_record
+        connect_adapter
+        ActiveRecord::Migration.verbose = false
+        ActiveRecord::Schema.define(:version => 1) do
+          create_table :translations, :force => true do |t|
+            t.string :locale
+            t.string :key
+            t.text :value
+            t.text :interpolations
+            t.boolean :is_proc, :default => false
+          end
+          add_index :translations, [:locale, :key], :unique => true
+        end
+      end
+
+      def connect_adapter
+        ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
+      end
+    end
+  end
+end
+
+#I18n::Tests.parse_options!
 $:.unshift File.expand_path("../lib", File.dirname(__FILE__))
 require 'i18n/active_record'
 require 'i18n/tests'
-require 'mocha'
 I18n::Tests.setup_active_record
-
-class Test::Unit::TestCase
+require 'test/unit'
+class Minitest::Test
   def self.test(name, &block)
     test_name = "test_#{name.gsub(/\s+/,'_')}".to_sym
     defined = instance_method(test_name) rescue false
