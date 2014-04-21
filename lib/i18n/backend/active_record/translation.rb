@@ -49,15 +49,14 @@ module I18n
         TRUTHY_CHAR = "\001"
         FALSY_CHAR = "\002"
 
-        set_table_name 'translations'
-        attr_protected :is_proc, :interpolations
+        self.table_name = 'translations'
 
         serialize :value
         serialize :interpolations, Array
 
         class << self
           def locale(locale)
-            scoped(:conditions => { :locale => locale.to_s })
+            where(:locale => locale.to_s)
           end
 
           def lookup(keys, *separator)
@@ -70,11 +69,11 @@ module I18n
             end
 
             namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
-            scoped(:conditions => ["#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace])
+            where("#{column_name} IN (?) OR #{column_name} LIKE ?", keys, namespace)
           end
 
           def available_locales
-            Translation.find(:all, :select => 'DISTINCT locale').map { |t| t.locale.to_sym }
+            Translation.distinct(:locale).map { |t| t.locale.to_sym }
           end
         end
 
