@@ -15,10 +15,10 @@ GEM
     arel (3.0.3)
     builder (3.0.4)
     i18n (0.6.9)
-    metaclass (0.0.4)
-    mocha (1.0.0)
-      metaclass (~> 0.0.1)
+    mocha (0.9.9)
+      rake
     multi_json (1.9.2)
+    rake (10.3.1)
     sqlite3 (1.3.9)
     test_declarative (0.0.5)
     tzinfo (0.3.39)
@@ -29,7 +29,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord (~> 3.x)
   activesupport (~> 3.x)
-  i18n
-  mocha
+  i18n (~> 0.6)
+  mocha (= 0.9.9)
   sqlite3
   test_declarative

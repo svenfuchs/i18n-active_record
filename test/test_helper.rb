@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'minitest/autorun'
 
 # Do not load the i18n gem from libraries like active_support.
 #
@@ -61,7 +60,7 @@ require 'i18n/active_record'
 require 'i18n/tests'
 I18n::Tests.setup_active_record
 require 'test/unit'
-class Minitest::Test
+class Test::Unit::TestCase
   def self.test(name, &block)
     test_name = "test_#{name.gsub(/\s+/,'_')}".to_sym
     defined = instance_method(test_name) rescue false
