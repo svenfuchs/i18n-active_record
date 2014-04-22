@@ -1,13 +1,20 @@
 require File.expand_path('../test_helper', __FILE__)
 
 class I18nActiveRecordApiTest < Test::Unit::TestCase
+  class I18n::Backend::ActiveRecord
+    include I18n::Backend::ActiveRecord::Missing
+  end
+
   def setup
     I18n.backend = I18n::Backend::ActiveRecord.new
+    I18n.exception_handler = I18n::StoreMissingLookupExceptionHandler.new
+    I18n::Backend::ActiveRecord::Translation.send(:include, I18n::Backend::ActiveRecord::StoreProcs)
+    I18n::Backend::ActiveRecord::Translation.delete_all
     super
   end
 
   def self.can_store_procs?
-    I18n::Backend::ActiveRecord.included_modules.include?(I18n::Backend::ActiveRecord::StoreProcs)
+    I18n::Backend::ActiveRecord::Translation.respond_to?(:bl)
   end
 
   include I18n::Tests::Basics
