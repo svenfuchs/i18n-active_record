@@ -8,6 +8,7 @@ class I18nActiveRecordMissingTest < Test::Unit::TestCase
   def setup
     I18n.backend.store_translations(:en, :bar => 'Bar', :i18n => { :plural => { :keys => [:zero, :one, :other] } })
     I18n.backend = I18n::Backend::Chain.new(Backend.new, I18n.backend)
+    I18n.exception_handler = I18n::StoreMissingLookupExceptionHandler.new
     I18n::Backend::ActiveRecord::Translation.delete_all
   end
 
