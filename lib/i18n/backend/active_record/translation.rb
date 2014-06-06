@@ -73,7 +73,7 @@ module I18n
           end
 
           def available_locales
-            Translation.distinct(:locale).map { |t| t.locale.to_sym }
+            Translation.select(:locale).uniq.map { |t| t.locale.to_sym }
           end
         end
 
@@ -83,9 +83,7 @@ module I18n
 
         def value
           value = read_attribute(:value)
-          if is_proc
-            Kernel.eval(value)
-          elsif value == FALSY_CHAR
+          if value == FALSY_CHAR
             false
           elsif value == TRUTHY_CHAR
             true
@@ -94,15 +92,15 @@ module I18n
           end
         end
 
-        def value=(value)
+        def value=(v)
           if value === false
             value = FALSY_CHAR
           elsif value === true
             value = TRUTHY_CHAR
           end
-
-          write_attribute(:value, value)
+          write_attribute(:value, v)
         end
+
       end
     end
   end

@@ -6,9 +6,10 @@ class I18nActiveRecordMissingTest < Test::Unit::TestCase
   end
 
   def setup
-    I18n.backend.store_translations(:en, :bar => 'Bar', :i18n => { :plural => { :keys => [:zero, :one, :other] } })
     I18n.backend = I18n::Backend::Chain.new(Backend.new, I18n.backend)
+    I18n.exception_handler = I18n::StoreMissingLookupExceptionHandler.new
     I18n::Backend::ActiveRecord::Translation.delete_all
+    I18n.backend.store_translations(:en, :bar => 'Bar', :i18n => { :plural => { :keys => [:zero, :one, :other] } })
   end
 
   test "can persist interpolations" do
@@ -19,14 +20,16 @@ class I18nActiveRecordMissingTest < Test::Unit::TestCase
   end
 
   test "lookup persists the key" do
+    count_before = I18n::Backend::ActiveRecord::Translation.count
     I18n.t('foo.bar.baz')
-    assert_equal 1, I18n::Backend::ActiveRecord::Translation.count
+    assert_equal I18n::Backend::ActiveRecord::Translation.count, count_before + 1
     assert I18n::Backend::ActiveRecord::Translation.locale(:en).find_by_key('foo.bar.baz')
   end
 
   test "lookup does not persist the key twice" do
+    count_before = I18n::Backend::ActiveRecord::Translation.count
     2.times { I18n.t('foo.bar.baz') }
-    assert_equal 1, I18n::Backend::ActiveRecord::Translation.count
+    assert_equal I18n::Backend::ActiveRecord::Translation.count, count_before + 1
     assert I18n::Backend::ActiveRecord::Translation.locale(:en).find_by_key('foo.bar.baz')
   end
 

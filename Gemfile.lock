@@ -1,0 +1,52 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (3.2.17)
+      activesupport (= 3.2.17)
+      builder (~> 3.0.0)
+    activerecord (3.2.17)
+      activemodel (= 3.2.17)
+      activesupport (= 3.2.17)
+      arel (~> 3.0.2)
+      tzinfo (~> 0.3.29)
+    activesupport (3.2.17)
+      i18n (~> 0.6, >= 0.6.4)
+      multi_json (~> 1.0)
+    arel (3.0.3)
+    builder (3.0.4)
+    file-tail (1.0.12)
+      tins (~> 0.5)
+    i18n (0.6.9)
+    mocha (0.9.9)
+      rake
+    multi_json (1.9.2)
+    rake (10.3.1)
+    ruby2ruby (1.3.1)
+      ruby_parser (~> 2.0)
+      sexp_processor (~> 3.0)
+    ruby_parser (2.3.1)
+      sexp_processor (~> 3.0)
+    sexp_processor (3.2.0)
+    sourcify (0.5.0)
+      file-tail (>= 1.0.5)
+      ruby2ruby (>= 1.2.5)
+      ruby_parser (>= 2.0.5)
+      sexp_processor (>= 3.0.5)
+    sqlite3 (1.3.9)
+    test_declarative (0.0.5)
+    tins (0.13.2)
+    tzinfo (0.3.39)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  activerecord (~> 3.x)
+  activesupport (~> 3.x)
+  file-tail
+  i18n (~> 0.6)
+  mocha (= 0.9.9)
+  ruby_parser
+  sourcify
+  sqlite3
+  test_declarative

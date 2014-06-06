@@ -1,6 +1,6 @@
 require File.expand_path('../test_helper', __FILE__)
 
-class I18nBackendActiveRecordTest < Test::Unit::TestCase
+class I18nBackendActiveRecordTest < Minitest::Test
   def setup
     I18n.backend = I18n::Backend::ActiveRecord.new
     store_translations(:en, :foo => { :bar => 'bar', :baz => 'baz' })
