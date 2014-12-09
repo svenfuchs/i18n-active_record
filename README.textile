@@ -2,6 +2,7 @@ h1. I18n::Backend::ActiveRecord
 
 This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n":http://github.com/svenfuchs/i18n.
 
+Only difference is that it uses the Translation.cache_locale_key method for fetching translation records through a cache tier.
 h2. Installation
 
 For Bundler put the following in your Gemfile:
