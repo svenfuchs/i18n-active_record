@@ -54,10 +54,17 @@ module I18n
         end
 
         def translate(locale, key, options = {})
-          super
-        rescue I18n::MissingTranslationData => e
-          self.store_default_translations(locale, key, options)
-          raise e
+          # super used to raise I18n::MissingTranslationData, but not any more
+          # Rails 4.1.5 and 0.7.0.beta1 result in super throwing :exception, so we need to catch :exception
+          result = catch(:exception) do
+              super
+          end
+            
+          if result.is_a? I18n::MissingTranslation
+            self.store_default_translations(locale, key, options)
+            raise result.to_exception
+          end
+          return result
         end
       end
     end
