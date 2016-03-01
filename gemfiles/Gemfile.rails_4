@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gemspec path: '..'
+
+gem 'activerecord', '~> 4.2.0'
+gem 'sqlite3'
+
+gem 'minitest'
+gem 'test_declarative'
+gem 'mocha'

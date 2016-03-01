@@ -1,6 +1,6 @@
-require File.expand_path('../test_helper', __FILE__)
+require 'test_helper'
 
-class I18nActiveRecordApiTest < Test::Unit::TestCase
+class I18nActiveRecordApiTest < I18n::TestCase
   def setup
     I18n.backend = I18n::Backend::ActiveRecord.new
     super
@@ -26,5 +26,4 @@ class I18nActiveRecordApiTest < Test::Unit::TestCase
   test "make sure we use an ActiveRecord backend" do
     assert_equal I18n::Backend::ActiveRecord, I18n.backend.class
   end
-end if defined?(ActiveRecord)
-
+end

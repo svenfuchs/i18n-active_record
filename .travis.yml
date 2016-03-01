@@ -1,0 +1,13 @@
+rvm:
+  - 1.9.3
+  - 2.0.0
+  - 2.1
+  - 2.2
+  - rbx
+  - jruby
+
+gemfile:
+  - Gemfile
+  - gemfiles/Gemfile.rails_3
+  - gemfiles/Gemfile.rails_4
+  - gemfiles/Gemfile.rails_master
