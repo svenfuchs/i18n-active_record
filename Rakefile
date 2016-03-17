@@ -10,7 +10,7 @@ end
 namespace :bundle do
   task :env do
     db = ENV['DB'].to_s
-    db = '' if db == 'sqlite'
+    db = 'sqlite' if db == ''
     ar = ENV['AR'].to_s
 
     next if db == 'sqlite' && ar.empty?

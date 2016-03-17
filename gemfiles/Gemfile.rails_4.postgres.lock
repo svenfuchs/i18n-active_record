@@ -39,6 +39,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (~> 4.2.0)
+  bundler
   i18n-active_record!
   minitest
   mocha
