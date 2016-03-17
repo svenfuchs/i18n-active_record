@@ -1,36 +1,59 @@
-require 'test_setup'
+$KCODE = 'u' if RUBY_VERSION <= '1.9'
 
-I18n::Tests.parse_options!
 require 'bundler/setup'
-$:.unshift File.expand_path("../lib", File.dirname(__FILE__))
+require 'minitest/autorun'
+require 'mocha/setup'
+require 'test_declarative'
+
 require 'i18n/active_record'
 require 'i18n/tests'
-require 'mocha'
-I18n::Tests.setup_active_record
 
-class Test::Unit::TestCase
-  def self.test(name, &block)
-    test_name = "test_#{name.gsub(/\s+/,'_')}".to_sym
-    defined = instance_method(test_name) rescue false
-    raise "#{test_name} is already defined in #{self}" if defined
-    if block_given?
-      define_method(test_name, &block)
-    else
-      define_method(test_name) do
-        flunk "No implementation provided for #{name}"
-      end
+gemfile = ENV['BUNDLE_GEMFILE'] || 'Gemfile'
+
+begin
+  require 'active_record'
+  ::ActiveRecord::Base.connection
+rescue LoadError => e
+  puts "can't use ActiveRecord backend because: #{e.message}"
+rescue ::ActiveRecord::ConnectionNotEstablished
+  require 'i18n/backend/active_record'
+  if gemfile.end_with? 'postgres'
+    ::ActiveRecord::Base.establish_connection adapter: 'postgresql', database: 'i18n_unittest', username: 'i18n', password: '', host: 'localhost'
+  elsif gemfile.end_with? 'mysql'
+  else
+    ::ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
+  end
+  ::ActiveRecord::Migration.verbose = false
+  ::ActiveRecord::Schema.define(:version => 1) do
+    create_table :translations, :force => true do |t|
+      t.string :locale
+      t.string :key
+      t.text :value
+      t.text :interpolations
+      t.boolean :is_proc, :default => false
     end
+    add_index :translations, [:locale, :key], :unique => true
   end
+end
 
-  def self.with_mocha
-    yield if Object.respond_to?(:expects)
+TEST_CASE = defined?(Minitest::Test) ? Minitest::Test : MiniTest::Unit::TestCase
+
+class TEST_CASE
+  alias :assert_raise :assert_raises
+  alias :assert_not_equal :refute_equal
+
+  def assert_nothing_raised(*args)
+    yield
   end
+end
 
+class I18n::TestCase < TEST_CASE
   def teardown
-    I18n.locale = nil
+    I18n.enforce_available_locales = false
+    I18n.available_locales = []
+    I18n.locale = :en
     I18n.default_locale = :en
     I18n.load_path = []
-    I18n.available_locales = nil
     I18n.backend = nil
   end
 
@@ -48,9 +71,3 @@ class Test::Unit::TestCase
     File.dirname(__FILE__) + '/test_data/locales'
   end
 end
-
-Object.class_eval do
-  def meta_class
-    class << self; self; end
-  end
-end unless Object.method_defined?(:meta_class)
