@@ -10,10 +10,10 @@ end
 namespace :bundle do
   task :env do
     db = ENV['DB'].to_s
-    db = 'sqlite' if db == ''
+    db = '' if db == 'sqlite'
     ar = ENV['AR'].to_s
 
-    next if db == 'sqlite' && ar.empty?
+    next if db == '' && ar.empty?
 
     gemfile = 'gemfiles/Gemfile'
     gemfile += ".rails_#{ar}" unless ar.empty?
@@ -21,6 +21,7 @@ namespace :bundle do
     raise "Cannot find gemfile at #{gemfile}" unless File.exist?(gemfile)
 
     ENV['BUNDLE_GEMFILE'] = gemfile
+    puts "Using gemfile: #{gemfile}"
   end
 
   task install: :env do
