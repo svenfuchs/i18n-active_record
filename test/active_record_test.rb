@@ -48,4 +48,19 @@ class I18nBackendActiveRecordTest < I18n::TestCase
   test "expand_keys" do
     assert_equal %w(foo foo.bar foo.bar.baz), I18n.backend.send(:expand_keys, :'foo.bar.baz')
   end
+
+  test "available_locales returns uniq locales" do
+    I18n::Backend::ActiveRecord::Translation.delete_all
+    I18n.backend.store_translations(:en, :foo => { :bar => 'bar' })
+    I18n.backend.store_translations(:en, :foo => { :baz => 'baz' })
+    I18n.backend.store_translations(:de, :foo1 => 'foo')
+    I18n.backend.store_translations(:de, :foo2 => 'foo')
+    I18n.backend.store_translations(:uk, :foo3 => 'foo')
+
+    available_locales = I18n::Backend::ActiveRecord::Translation.available_locales
+    assert_equal 3, available_locales.size
+    assert_includes available_locales, :en
+    assert_includes available_locales, :de
+    assert_includes available_locales, :uk
+  end
 end
