@@ -1,13 +1,35 @@
+language: ruby
+cache: bundler
+
+services:
+  - postgresql
+  - mysql
+
+before_install:
+  - gem install bundler
+
+before_script:
+  - mysql -e 'create database i18n_unittest;'
+  - psql -c 'create database i18n_unittest;' -U postgres
+
+notifications:
+  email: false
+
 rvm:
   - 1.9.3
-  - 2.0.0
   - 2.1
   - 2.2
-  - rbx
-  - jruby
 
 gemfile:
   - Gemfile
   - gemfiles/Gemfile.rails_3
   - gemfiles/Gemfile.rails_4
   - gemfiles/Gemfile.rails_master
+
+env:
+  - PG_USER=postgres
+
+matrix:
+  allow_failures:
+    - rvm: 2.2
+  fast_finish: true
