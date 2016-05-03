@@ -4,7 +4,10 @@ gemspec path: '..'
 
 gem 'activerecord', github: 'rails/rails', branch: 'master'
 gem 'sqlite3'
+gem 'mysql'
+gem 'pg'
 
 gem 'minitest'
 gem 'test_declarative'
 gem 'mocha'
+gem 'rake'

@@ -7,17 +7,22 @@ def execute(command)
   system command
 end
 
+def bundle_options
+  opt = ''
+  opt +=  "--gemfile #{ENV['BUNDLE_GEMFILE']}" if ENV['BUNDLE_GEMFILE']
+end
+
+def each_database(&block)
+  ['sqlite', 'postgres', 'mysql'].each &block
+end
+
 namespace :bundle do
   task :env do
-    db = ENV['DB'].to_s
-    db = '' if db == 'sqlite'
     ar = ENV['AR'].to_s
 
-    next if db == '' && ar.empty?
+    next if ar.empty?
 
-    gemfile = 'gemfiles/Gemfile'
-    gemfile += ".rails_#{ar}" unless ar.empty?
-    gemfile += ".#{db}" unless db.empty?
+    gemfile = "gemfiles/Gemfile.rails_#{ar}"
     raise "Cannot find gemfile at #{gemfile}" unless File.exist?(gemfile)
 
     ENV['BUNDLE_GEMFILE'] = gemfile
@@ -25,10 +30,19 @@ namespace :bundle do
   end
 
   task install: :env do
-    opt = ''
-    opt +=  "--gemfile #{ENV['BUNDLE_GEMFILE']}" if ENV['BUNDLE_GEMFILE']
-    execute "bundle install #{opt}"
+    execute "bundle install #{bundle_options}"
   end
+
+  task :install_all do
+    [nil, '3', '4', 'master'].each do |ar|
+      opt = ar && "AR=#{ar}"
+      execute "rake bundle:install #{opt}"
+    end
+  end
+end
+
+task :test do
+  each_database { |db| execute "rake #{db}:test" }
 end
 
 Rake::TestTask.new :_test do |t|
@@ -37,8 +51,11 @@ Rake::TestTask.new :_test do |t|
   t.verbose = false
 end
 
-task test: 'bundle:env' do
-  Rake::Task['_test'].execute
+each_database do |db|
+  namespace db do
+    task(:env) { ENV['DB'] = db }
+    task test: ['env', 'bundle:env', '_test']
+  end
 end
 
 task default: :test
