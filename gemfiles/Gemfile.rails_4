@@ -6,6 +6,7 @@ gem 'activerecord', '~> 4.2.0'
 gem 'sqlite3'
 gem 'mysql'
 gem 'pg'
+gem 'sourcify'
 
 gem 'minitest'
 gem 'test_declarative'
