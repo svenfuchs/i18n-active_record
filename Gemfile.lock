@@ -22,6 +22,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
+    byebug (8.2.2)
     file-tail (1.1.1)
       tins (~> 1.0)
     i18n (0.7.0)
@@ -57,6 +58,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   bundler
+  byebug
   i18n-active_record!
   minitest
   mocha
