@@ -70,6 +70,11 @@ h2. Usage
 
 You can now use @I18n.t('Your String')@ to lookup translations in the database.
 
+h2. Examples
+
+* http://collectiveidea.com/blog/archives/2016/05/31/beyond-yml-files-dynamic-translations/
+
 h2. Maintainers
 
 * Sven Fuchs
+* Tim Maslyuchenko
