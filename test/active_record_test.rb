@@ -8,6 +8,7 @@ class I18nBackendActiveRecordTest < I18n::TestCase
 
   def teardown
     I18n::Backend::ActiveRecord::Translation.destroy_all
+    I18n::Backend::ActiveRecord.instance_variable_set :@config, I18n::Backend::ActiveRecord::Configuration.new
     super
   end
 
@@ -62,5 +63,17 @@ class I18nBackendActiveRecordTest < I18n::TestCase
     assert_includes available_locales, :en
     assert_includes available_locales, :de
     assert_includes available_locales, :uk
+  end
+
+  test "the default configuration has cleanup_with_destroy == false" do
+    refute I18n::Backend::ActiveRecord.config.cleanup_with_destroy
+  end
+
+  test "the configuration supports cleanup_with_destroy being set" do
+    I18n::Backend::ActiveRecord.configure do |config|
+      config.cleanup_with_destroy = true
+    end
+
+    assert I18n::Backend::ActiveRecord.config.cleanup_with_destroy
   end
 end

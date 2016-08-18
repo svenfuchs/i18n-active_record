@@ -4,9 +4,20 @@ require 'i18n/backend/active_record/translation'
 module I18n
   module Backend
     class ActiveRecord
-      autoload :Missing,     'i18n/backend/active_record/missing'
-      autoload :StoreProcs,  'i18n/backend/active_record/store_procs'
-      autoload :Translation, 'i18n/backend/active_record/translation'
+      autoload :Missing,       'i18n/backend/active_record/missing'
+      autoload :StoreProcs,    'i18n/backend/active_record/store_procs'
+      autoload :Translation,   'i18n/backend/active_record/translation'
+      autoload :Configuration, 'i18n/backend/active_record/configuration'
+
+      class << self
+        def configure
+          yield(config) if block_given?
+        end
+
+        def config
+          @config ||= Configuration.new
+        end
+      end
 
       module Implementation
         include Base, Flatten
@@ -22,7 +33,14 @@ module I18n
         def store_translations(locale, data, options = {})
           escape = options.fetch(:escape, true)
           flatten_translations(locale, data, escape, false).each do |key, value|
-            Translation.locale(locale).lookup(expand_keys(key)).delete_all
+            translation = Translation.locale(locale).lookup(expand_keys(key))
+
+            if ActiveRecord.config.cleanup_with_destroy
+              translation.destroy_all
+            else
+              translation.delete_all
+            end
+
             Translation.create(:locale => locale.to_s, :key => key.to_s, :value => value)
           end
         end
@@ -59,4 +77,3 @@ module I18n
     end
   end
 end
-
