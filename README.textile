@@ -66,6 +66,14 @@ A more advanced example (Thanks Moritz), which uses YAML files and ActiveRecord 
   end
 </pre>
 
+You may also configure whether the ActiveRecord backend should use @destroy@ or @delete@ when cleaning up internally.
+
+<pre>
+I18n::Backend::ActiveRecord.configure do |config|
+  config.cleanup_with_destroy = true # defaults to false
+end
+</pre>
+
 h2. Usage
 
 You can now use @I18n.t('Your String')@ to lookup translations in the database.
