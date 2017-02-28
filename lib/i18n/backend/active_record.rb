@@ -1,5 +1,4 @@
 require 'i18n/backend/base'
-require 'i18n/backend/active_record/translation'
 
 module I18n
   module Backend
