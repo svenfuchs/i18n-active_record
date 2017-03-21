@@ -76,4 +76,16 @@ class I18nBackendActiveRecordTest < I18n::TestCase
 
     assert I18n::Backend::ActiveRecord.config.cleanup_with_destroy
   end
+
+  test "fetching subtree of translations" do
+    I18n::Backend::ActiveRecord::Translation.delete_all
+    I18n.backend.store_translations(:en, foo: { bar: { fizz: 'buzz', spuz: 'zazz' }, baz: { fizz: 'buzz' } })
+    assert_equal I18n.t(:foo), { bar: { fizz: 'buzz', spuz: 'zazz' }, baz: { fizz: 'buzz' } }
+  end
+
+  test "build_translation_hash_by_key" do
+    translation = I18n::Backend::ActiveRecord::Translation.new(value: 'translation', key: 'foo.bar.fizz.buzz')
+    expected_hash = { 'bar' => { 'fizz' => { 'buzz' => 'translation' } } }
+    assert_equal I18n.backend.send(:build_translation_hash_by_key, 'foo', translation), expected_hash
+  end
 end

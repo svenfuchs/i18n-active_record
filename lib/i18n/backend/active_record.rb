@@ -56,13 +56,22 @@ module I18n
           elsif result.first.key == key
             result.first.value
           else
-            chop_range = (key.size + FLATTEN_SEPARATOR.size)..-1
-            result = result.inject({}) do |hash, r|
-              hash[r.key.slice(chop_range)] = r.value
-              hash
+            result = result.inject({}) do |hash, translation|
+              hash.deep_merge build_translation_hash_by_key(key, translation)
             end
             result.deep_symbolize_keys
           end
+        end
+
+        def build_translation_hash_by_key(lookup_key, translation)
+          hash = {}
+          chop_range = (lookup_key.size + FLATTEN_SEPARATOR.size)..-1
+          translation_nested_keys = translation.key.slice(chop_range).split(FLATTEN_SEPARATOR)
+          translation_nested_keys.each.with_index.inject(hash) do |iterator, (key, index)|
+            iterator[key] = translation_nested_keys[index + 1] ?  {} : translation.value
+            iterator[key]
+          end
+          hash
         end
 
         # For a key :'foo.bar.baz' return ['foo', 'foo.bar', 'foo.bar.baz']
