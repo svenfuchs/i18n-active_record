@@ -34,7 +34,7 @@ namespace :bundle do
   end
 
   task :install_all do
-    [nil, '3', '4', 'master'].each do |ar|
+    [nil, '3', '4', '5', 'master'].each do |ar|
       opt = ar && "AR=#{ar}"
       execute "rake bundle:install #{opt}"
     end

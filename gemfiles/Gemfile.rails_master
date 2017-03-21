@@ -2,9 +2,9 @@ source 'https://rubygems.org'
 
 gemspec path: '..'
 
-gem 'activerecord', github: 'rails/rails', branch: 'master'
+gem 'activerecord', git: 'https://github.com/rails/rails', branch: 'master'
 gem 'sqlite3'
-gem 'mysql'
+gem 'mysql2'
 gem 'pg'
 
 gem 'minitest'
