@@ -19,7 +19,7 @@ rescue ::ActiveRecord::ConnectionNotEstablished
   when 'postgres'
     ::ActiveRecord::Base.establish_connection adapter: 'postgresql', database: 'i18n_unittest', username: ENV['PG_USER'] || 'i18n', password: '', host: 'localhost'
   when 'mysql'
-    ::ActiveRecord::Base.establish_connection adapter: 'mysql', database: 'i18n_unittest', username: 'root', password: '', host: 'localhost'
+    ::ActiveRecord::Base.establish_connection adapter: 'mysql2', database: 'i18n_unittest', username: 'root', password: '', host: 'localhost'
   else
     ::ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
   end
