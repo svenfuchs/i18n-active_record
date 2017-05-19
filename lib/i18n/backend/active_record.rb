@@ -49,29 +49,28 @@ module I18n
 
         def lookup(locale, key, scope = [], options = {})
           key = normalize_flat_keys(locale, key, scope, options[:separator])
-          result = Translation.locale(locale).lookup(key)
+          results = Translation.locale(locale).lookup(key).order(key: :desc)
 
-          if result.empty?
+          if results.empty?
             nil
-          elsif result.first.key == key
-            result.first.value
+          elsif results.first.key == key
+            results.first.value
           else
-            result = result.inject({}) do |hash, translation|
+            results.inject({}) do |hash, translation|
               hash.deep_merge build_translation_hash_by_key(key, translation)
-            end
-            result.deep_symbolize_keys
+            end.deep_symbolize_keys
           end
         end
 
         def build_translation_hash_by_key(lookup_key, translation)
-          hash = {}
           chop_range = (lookup_key.size + FLATTEN_SEPARATOR.size)..-1
-          translation_nested_keys = translation.key.slice(chop_range).split(FLATTEN_SEPARATOR)
-          translation_nested_keys.each.with_index.inject(hash) do |iterator, (key, index)|
-            iterator[key] = translation_nested_keys[index + 1] ?  {} : translation.value
-            iterator[key]
+          translation_nested_keys = translation.key.slice(chop_range)
+          return {} if translation_nested_keys.nil?
+          translation_nested_keys = translation_nested_keys.split(FLATTEN_SEPARATOR)
+
+          translation_nested_keys.each.with_index.inject({}) do |iterator, (key, index)|
+            iterator.merge(key => translation_nested_keys[index + 1] ? {} : translation.value)
           end
-          hash
         end
 
         # For a key :'foo.bar.baz' return ['foo', 'foo.bar', 'foo.bar.baz']
