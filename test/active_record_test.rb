@@ -88,4 +88,9 @@ class I18nBackendActiveRecordTest < I18n::TestCase
     expected_hash = { 'bar' => { 'fizz' => { 'buzz' => 'translation' } } }
     assert_equal I18n.backend.send(:build_translation_hash_by_key, 'foo', translation), expected_hash
   end
+
+  test "returning all keys via ." do
+    expected_hash = {:foo => { :bar => 'bar', :baz => 'baz' }}
+    assert_equal expected_hash, I18n.t('.')
+  end
 end
