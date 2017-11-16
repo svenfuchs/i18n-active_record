@@ -51,15 +51,13 @@ module I18n
           key = normalize_flat_keys(locale, key, scope, options[:separator])
           result = Translation.locale(locale).lookup(key)
 
-          if result.empty?
-            if key == '.'
-              result = Translation.locale(locale).all
-            else
-              return nil
-            end
+          if result.empty? && key == '.'
+            result = Translation.locale(locale).all
           end
 
-          if result.first.key == key
+          if result.empty?
+            nil
+          elsif result.first.key == key
             result.first.value
           else
             result = result.inject({}) do |hash, translation|

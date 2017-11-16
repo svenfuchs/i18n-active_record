@@ -93,4 +93,11 @@ class I18nBackendActiveRecordTest < I18n::TestCase
     expected_hash = {:foo => { :bar => 'bar', :baz => 'baz' }}
     assert_equal expected_hash, I18n.t('.')
   end
+
+  test "returning all keys via . when there are no keys" do
+    I18n.t('.') # Fixes test flakiness by loading available locales
+    I18n::Backend::ActiveRecord::Translation.destroy_all
+
+    assert_equal "translation missing: en.no key", I18n.t('.')
+  end
 end
