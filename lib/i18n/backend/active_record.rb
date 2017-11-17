@@ -49,10 +49,10 @@ module I18n
 
         def lookup(locale, key, scope = [], options = {})
           key = normalize_flat_keys(locale, key, scope, options[:separator])
-          result = Translation.locale(locale).lookup(key)
-
-          if result.empty? && key == '.'
-            result = Translation.locale(locale).all
+          result = if key == '.'
+            Translation.locale(locale).all
+          else
+            Translation.locale(locale).lookup(key)
           end
 
           if result.empty?
