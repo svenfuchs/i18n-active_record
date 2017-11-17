@@ -1,4 +1,4 @@
-require 'test_helper'
+require_relative './test_helper'
 
 class I18nBackendActiveRecordTest < I18n::TestCase
   def setup
@@ -87,5 +87,17 @@ class I18nBackendActiveRecordTest < I18n::TestCase
     translation = I18n::Backend::ActiveRecord::Translation.new(value: 'translation', key: 'foo.bar.fizz.buzz')
     expected_hash = { 'bar' => { 'fizz' => { 'buzz' => 'translation' } } }
     assert_equal I18n.backend.send(:build_translation_hash_by_key, 'foo', translation), expected_hash
+  end
+
+  test "returning all keys via ." do
+    expected_hash = {:foo => { :bar => 'bar', :baz => 'baz' }}
+    assert_equal expected_hash, I18n.t('.')
+  end
+
+  test "returning all keys via . when there are no keys" do
+    I18n.t('.') # Fixes test flakiness by loading available locales
+    I18n::Backend::ActiveRecord::Translation.destroy_all
+
+    assert_equal "translation missing: en.no key", I18n.t('.')
   end
 end

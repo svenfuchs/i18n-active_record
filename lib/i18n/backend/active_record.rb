@@ -49,7 +49,11 @@ module I18n
 
         def lookup(locale, key, scope = [], options = {})
           key = normalize_flat_keys(locale, key, scope, options[:separator])
-          result = Translation.locale(locale).lookup(key)
+          result = if key == '.'
+            Translation.locale(locale).all
+          else
+            Translation.locale(locale).lookup(key)
+          end
 
           if result.empty?
             nil
@@ -65,7 +69,11 @@ module I18n
 
         def build_translation_hash_by_key(lookup_key, translation)
           hash = {}
-          chop_range = (lookup_key.size + FLATTEN_SEPARATOR.size)..-1
+          if lookup_key == '.'
+            chop_range = 0..-1
+          else
+            chop_range = (lookup_key.size + FLATTEN_SEPARATOR.size)..-1
+          end
           translation_nested_keys = translation.key.slice(chop_range).split(FLATTEN_SEPARATOR)
           translation_nested_keys.each.with_index.inject(hash) do |iterator, (key, index)|
             iterator[key] = translation_nested_keys[index + 1] ?  {} : translation.value
