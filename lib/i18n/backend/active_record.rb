@@ -52,6 +52,9 @@ module I18n
           if key.first == '.'
             key = key[1..-1]
           end
+          if key.last == '.'
+            key = key[0..-2]
+          end
 
           result = if key == ''
             Translation.locale(locale).all
