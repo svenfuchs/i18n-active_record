@@ -94,6 +94,15 @@ class I18nBackendActiveRecordTest < I18n::TestCase
     assert_equal expected_hash, I18n.t('.')
   end
 
+  test "accessing keys with a trailing/leading period" do
+    expected_hash = { :bar => 'bar', :baz => 'baz' }
+    assert_equal expected_hash, I18n.t('foo')
+    assert_equal expected_hash, I18n.t('.foo')
+    assert_equal expected_hash, I18n.t('foo.')
+    assert_equal expected_hash, I18n.t('.foo.')
+    assert_equal expected_hash, I18n.t('.foo.')
+  end
+
   test "returning all keys via . when there are no keys" do
     I18n.t('.') # Fixes test flakiness by loading available locales
     I18n::Backend::ActiveRecord::Translation.destroy_all
