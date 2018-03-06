@@ -41,7 +41,7 @@ it.
 
 To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new file in *config/initializers* named *translation.rb*.
 
-A simple configuration for your locale.rb could look like this:
+A simple configuration for your `translation.rb` could look like this:
 
 <pre>
   require 'i18n/backend/active_record'
