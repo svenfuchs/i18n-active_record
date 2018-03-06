@@ -39,7 +39,7 @@ Your migration should look like this:
 With this translation model you will be able to manage your translation, and add new translations or languages through
 it.
 
-To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new file in *config/initializers* named *locale.rb*.
+To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new file in *config/initializers* named *translation.rb*.
 
 A simple configuration for your locale.rb could look like this:
 
