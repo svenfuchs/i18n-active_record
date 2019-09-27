@@ -47,7 +47,7 @@ To specify table name use:
   rails g i18n:active_record:install MyTranslation
 </pre>
 
-With this translation model you will be able to manage your translation, and add new translations or languages through
+With the translation model you will be able to manage your translation, and add new translations or languages through
 it.
 
 By default the installer creates a new file in *config/initializers* named *i18n_active_record.rb* with the following content.
