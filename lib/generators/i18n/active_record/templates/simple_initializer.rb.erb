@@ -1,0 +1,6 @@
+require 'i18n/backend/active_record'
+I18n.backend = I18n::Backend::ActiveRecord.new
+
+I18n::Backend::ActiveRecord.configure do |config|
+  # config.cleanup_with_destroy = true # defaults to false
+end

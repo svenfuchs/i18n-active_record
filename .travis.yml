@@ -6,7 +6,7 @@ services:
   - mysql
 
 before_install:
-  - gem install bundler
+  - gem install bundler -v 1.16.1
 
 before_script:
   - mysql -e 'create database i18n_unittest;'

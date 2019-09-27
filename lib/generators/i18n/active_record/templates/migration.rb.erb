@@ -1,0 +1,17 @@
+class Create<%= name.classify %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version.to_s %>]
+  def self.up
+    create_table :<%= name.tableize %> do |t|
+      t.string :locale
+      t.string :key
+      t.text   :value
+      t.text   :interpolations
+      t.boolean :is_proc, :default => false
+
+      t.timestamps
+    end
+  end
+
+  def self.down
+    drop_table :<%= name.tableize %>
+  end
+end
