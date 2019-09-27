@@ -13,8 +13,13 @@ For Bundler put the following in your Gemfile:
   gem 'i18n-active_record', :require => 'i18n/active_record'
 </pre>
 
-Next create a active record model named @Translation@ with the Rails Generator.
-Your migration should look like this:
+After updating your bundle, run the installer
+
+<pre>
+  rails g i18n:active_record:install
+</pre>
+
+It creates a migration:
 
 <pre>
   class CreateTranslations < ActiveRecord::Migration
@@ -36,19 +41,16 @@ Your migration should look like this:
   end
 </pre>
 
+To specify table name use:
+
+<pre>
+  rails g i18n:active_record:install MyTranslation
+</pre>
+
 With this translation model you will be able to manage your translation, and add new translations or languages through
 it.
 
-To load @I18n::Backend::ActiveRecord@ into your Rails application, create a new file in *config/initializers* named *translation.rb*.
-
-A simple configuration for your `translation.rb` could look like this:
-
-<pre>
-  require 'i18n/backend/active_record'
-  I18n.backend = I18n::Backend::ActiveRecord.new
-</pre>
-
-A more advanced example (Thanks Moritz), which uses YAML files and ActiveRecord for lookups:
+By default the installer creates a new file in *config/initializers* named *i18n_active_record.rb* with the following content.
 
 <pre>
   require 'i18n/backend/active_record'
@@ -64,6 +66,19 @@ A more advanced example (Thanks Moritz), which uses YAML files and ActiveRecord 
 
     I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Simple.new, I18n.backend)
   end
+</pre>
+
+To perform a simpler installation use:
+
+<pre>
+  rails g i18n:active_record:install --simple
+</pre>
+
+It generates:
+
+<pre>
+  require 'i18n/backend/active_record'
+  I18n.backend = I18n::Backend::ActiveRecord.new
 </pre>
 
 You may also configure whether the ActiveRecord backend should use @destroy@ or @delete@ when cleaning up internally.
@@ -91,4 +106,4 @@ h2. Examples
 h2. Maintainers
 
 * Sven Fuchs
-* Tim Maslyuchenko
+* Tim Masliuchenko
