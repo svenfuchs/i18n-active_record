@@ -1,6 +1,9 @@
 language: ruby
 cache: bundler
 
+notifications:
+  email: false
+
 services:
   - postgresql
   - mysql
@@ -11,9 +14,6 @@ before_install:
 before_script:
   - mysql -e 'create database i18n_unittest;'
   - psql -c 'create database i18n_unittest;' -U postgres
-
-notifications:
-  email: false
 
 rvm:
   - 1.9.3
@@ -26,6 +26,7 @@ gemfile:
   - gemfiles/Gemfile.rails_3
   - gemfiles/Gemfile.rails_4
   - gemfiles/Gemfile.rails_5
+  - gemfiles/Gemfile.rails_6
   - gemfiles/Gemfile.rails_master
 
 env:
