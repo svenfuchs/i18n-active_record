@@ -1,31 +1,31 @@
 language: ruby
 cache: bundler
 
+notifications:
+  email: false
+
 services:
   - postgresql
   - mysql
 
 before_install:
-  - gem install bundler -v 1.16.1
+  - gem install bundler -v 2.0.2
 
 before_script:
   - mysql -e 'create database i18n_unittest;'
   - psql -c 'create database i18n_unittest;' -U postgres
 
-notifications:
-  email: false
-
 rvm:
-  - 1.9.3
-  - 2.1
-  - 2.2
   - 2.3
+  - 2.4
+  - 2.5
+  - 2.6
 
 gemfile:
-  - Gemfile
   - gemfiles/Gemfile.rails_3
   - gemfiles/Gemfile.rails_4
   - gemfiles/Gemfile.rails_5
+  - gemfiles/Gemfile.rails_6
   - gemfiles/Gemfile.rails_master
 
 env:
@@ -34,21 +34,11 @@ env:
 matrix:
   fast_finish: true
   exclude:
-    - rvm: 1.9.3
-      gemfile: Gemfile
-    - rvm: 2.1
-      gemfile: Gemfile
-    - rvm: 2.2
-      gemfile: Gemfile
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.rails_5
-    - rvm: 2.1
-      gemfile: gemfiles/Gemfile.rails_5
-    - rvm: 2.2
-      gemfile: gemfiles/Gemfile.rails_5
-    - rvm: 1.9.3
+    - rvm: 2.3
+      gemfile: gemfiles/Gemfile.rails_6
+    - rvm: 2.4
+      gemfile: gemfiles/Gemfile.rails_6
+    - rvm: 2.3
       gemfile: gemfiles/Gemfile.rails_master
-    - rvm: 2.1
-      gemfile: gemfiles/Gemfile.rails_master
-    - rvm: 2.2
+    - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails_master

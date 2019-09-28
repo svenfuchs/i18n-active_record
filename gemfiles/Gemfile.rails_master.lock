@@ -1,44 +1,44 @@
 GIT
   remote: https://github.com/rails/rails
-  revision: cd3c0357d7ca7574f5a15a1229d25417a93a0a06
+  revision: d0e813fc1225278df5c12e7a0a4a0c65d0c0e1ac
   branch: master
   specs:
-    activemodel (5.1.0.beta1)
-      activesupport (= 5.1.0.beta1)
-    activerecord (5.1.0.beta1)
-      activemodel (= 5.1.0.beta1)
-      activesupport (= 5.1.0.beta1)
-      arel (~> 8.0)
-    activesupport (5.1.0.beta1)
+    activemodel (6.1.0.alpha)
+      activesupport (= 6.1.0.alpha)
+    activerecord (6.1.0.alpha)
+      activemodel (= 6.1.0.alpha)
+      activesupport (= 6.1.0.alpha)
+    activesupport (6.1.0.alpha)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (~> 0.7)
+      i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+      zeitwerk (~> 2.1, >= 2.1.8)
 
 PATH
   remote: ..
   specs:
-    i18n-active_record (0.2.2)
+    i18n-active_record (0.3.0)
       i18n (>= 0.5.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    arel (8.0.0)
-    concurrent-ruby (1.0.5)
+    concurrent-ruby (1.1.5)
     i18n (0.8.1)
     metaclass (0.0.4)
     minitest (5.10.1)
     mocha (1.2.1)
       metaclass (~> 0.0.1)
-    mysql2 (0.4.5)
+    mysql2 (0.5.2)
     pg (0.20.0)
     rake (12.0.0)
     sqlite3 (1.3.13)
     test_declarative (0.0.5)
     thread_safe (0.3.6)
-    tzinfo (1.2.2)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
+    zeitwerk (2.1.10)
 
 PLATFORMS
   ruby
@@ -56,4 +56,4 @@ DEPENDENCIES
   test_declarative
 
 BUNDLED WITH
-   1.15.1
+   2.0.2
