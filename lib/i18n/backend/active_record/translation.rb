@@ -75,6 +75,18 @@ module I18n
           def available_locales
             Translation.select('DISTINCT locale').to_a.map { |t| t.locale.to_sym }
           end
+
+          def to_hash
+            Translation.all.each.with_object({}) do |t, memo|
+              locale_hash = (memo[t.locale.to_sym] ||= {})
+              keys = t.key.split('.')
+              keys.each.with_index.inject(locale_hash) do |iterator, (key_part, index)|
+                key = key_part.to_sym
+                iterator[key] = keys[index + 1] ? (iterator[key] || {}) : t.value
+                iterator[key]
+              end
+            end
+          end
         end
 
         def interpolates?(key)
