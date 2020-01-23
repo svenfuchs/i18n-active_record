@@ -41,7 +41,7 @@ module I18n
               translation.delete_all
             end
 
-            Translation.create(:locale => locale.to_s, :key => key.to_s, :value => value)
+            Translation.create(locale_id: ::Locale.find_by(code: locale).id, key: key.to_s, value: value)
           end
         end
 

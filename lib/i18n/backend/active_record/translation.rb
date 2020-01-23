@@ -49,14 +49,14 @@ module I18n
         TRUTHY_CHAR = "\001"
         FALSY_CHAR = "\002"
 
-        self.table_name = 'translations'
+        self.table_name = 'spree_global_translations'
 
         serialize :value
         serialize :interpolations, Array
 
         class << self
           def locale(locale)
-            where(:locale => locale.to_s)
+            where(locale_id: ::Locale.find_by(code: locale)&.id)
           end
 
           def lookup(keys, *separator)
