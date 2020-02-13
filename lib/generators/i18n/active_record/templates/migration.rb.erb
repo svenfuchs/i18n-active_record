@@ -1,4 +1,4 @@
-class Create<%= name.classify %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version.to_s %>]
+class <%= migration_class_name %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
   def self.up
     create_table :<%= name.tableize %> do |t|
       t.string :locale

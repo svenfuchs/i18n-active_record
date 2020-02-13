@@ -19,7 +19,7 @@ module I18n
         end
 
         def create_migrations
-          migration_template 'migration.rb.erb', 'db/migrate/create_translations.rb'
+          migration_template 'migration.rb.erb', "db/migrate/create_#{table_name}.rb"
         end
       end
     end
