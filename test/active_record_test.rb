@@ -109,4 +109,28 @@ class I18nBackendActiveRecordTest < I18n::TestCase
 
     assert_equal "translation missing: en.no key", I18n.t('.')
   end
+
+  test "intially unitinitialized" do
+    refute I18n.backend.initialized?
+    I18n.backend.init_translations
+    assert I18n.backend.initialized?
+    I18n.backend.reload!
+    refute I18n.backend.initialized?
+    I18n.backend.init_translations
+    assert I18n.backend.initialized?
+  end
+
+  test "translations returns all translations" do
+    expected_hash = { :en => { :foo => { :bar => 'bar', :baz => 'baz' } } }
+    I18n.backend.init_translations
+    assert_equal expected_hash, I18n.backend.send(:translations)
+    assert I18n.backend.initialized?
+  end
+
+  test "translations initialized with do_init argument" do
+    expected_hash = { :en => { :foo => { :bar => 'bar', :baz => 'baz' } } }
+    refute I18n.backend.initialized?
+    assert_equal expected_hash, I18n.backend.send(:translations, { do_init: true })
+    assert I18n.backend.initialized?
+  end
 end

@@ -45,6 +45,24 @@ module I18n
           end
         end
 
+        def reload!
+          @translations = nil
+          self
+        end
+
+        def initialized?
+          !@translations.nil?
+        end
+
+        def init_translations
+          @translations = Translation.to_hash
+        end
+
+        def translations(do_init: false)
+          init_translations if do_init || !initialized?
+          @translations ||= {}
+        end
+
       protected
 
         def lookup(locale, key, scope = [], options = {})
