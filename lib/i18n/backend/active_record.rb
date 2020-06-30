@@ -77,7 +77,7 @@ module I18n
           result = if key == ''
             Translation.locale(locale).all
           else
-            Rails.cache.fetch("i18n-active-record-#{key}") do
+            Rails.cache.fetch("i18n-active-record-#{translation.locale}-#{translation.key}") do
               Translation.locale(locale).lookup(key)
             end
           end
