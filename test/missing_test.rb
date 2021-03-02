@@ -51,7 +51,7 @@ class I18nActiveRecordMissingTest < I18n::TestCase
 
   test "creates a stub when a custom separator is used" do
     I18n.t('foo|baz', :separator => '|')
-    I18n::Backend::ActiveRecord::Translation.locale(:en).lookup("foo.baz").first.update_attributes(:value => 'baz!')
+    I18n::Backend::ActiveRecord::Translation.locale(:en).lookup("foo.baz").first.update(:value => 'baz!')
     assert_equal 'baz!', I18n.t('foo|baz', :separator => '|')
   end
 
@@ -64,7 +64,7 @@ class I18nActiveRecordMissingTest < I18n::TestCase
   test "creates a stub when a custom separator is used and the key contains the flatten separator (a dot character)" do
     key = 'foo|baz.zab'
     I18n.t(key, :separator => '|')
-    I18n::Backend::ActiveRecord::Translation.locale(:en).lookup("foo.baz\001zab").first.update_attributes(:value => 'baz!')
+    I18n::Backend::ActiveRecord::Translation.locale(:en).lookup("foo.baz\001zab").first.update(:value => 'baz!')
     assert_equal 'baz!', I18n.t(key, :separator => '|')
   end
 end

@@ -7,22 +7,22 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (5.0.2)
-      activesupport (= 5.0.2)
-    activerecord (5.0.2)
-      activemodel (= 5.0.2)
-      activesupport (= 5.0.2)
-      arel (~> 7.0)
-    activesupport (5.0.2)
+    activemodel (6.1.3)
+      activesupport (= 6.1.3)
+    activerecord (6.1.3)
+      activemodel (= 6.1.3)
+      activesupport (= 6.1.3)
+    activesupport (6.1.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (~> 0.7)
-      minitest (~> 5.1)
-      tzinfo (~> 1.1)
-    arel (7.1.4)
-    concurrent-ruby (1.0.5)
-    i18n (0.8.1)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
+    concurrent-ruby (1.1.8)
+    i18n (1.8.9)
+      concurrent-ruby (~> 1.0)
     metaclass (0.0.4)
-    minitest (5.10.1)
+    minitest (5.14.4)
     mocha (1.2.1)
       metaclass (~> 0.0.1)
     mysql2 (0.5.2)
@@ -30,9 +30,9 @@ GEM
     rake (13.0.1)
     sqlite3 (1.3.13)
     test_declarative (0.0.5)
-    thread_safe (0.3.6)
-    tzinfo (1.2.2)
-      thread_safe (~> 0.1)
+    tzinfo (2.0.4)
+      concurrent-ruby (~> 1.0)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
@@ -50,4 +50,4 @@ DEPENDENCIES
   test_declarative
 
 BUNDLED WITH
-   2.0.2
+   2.1.4
