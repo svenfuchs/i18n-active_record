@@ -1,3 +1,20 @@
+GIT
+  remote: https://github.com/rails/rails
+  revision: a8c462d37c1e482fa0a0fc16014fc9ad1d97032f
+  branch: main
+  specs:
+    activemodel (7.0.0.alpha)
+      activesupport (= 7.0.0.alpha)
+    activerecord (7.0.0.alpha)
+      activemodel (= 7.0.0.alpha)
+      activesupport (= 7.0.0.alpha)
+    activesupport (7.0.0.alpha)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 1.6, < 2)
+      minitest (>= 5.1)
+      tzinfo (~> 2.0)
+      zeitwerk (~> 2.3)
+
 PATH
   remote: ..
   specs:
@@ -7,17 +24,6 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (6.1.3)
-      activesupport (= 6.1.3)
-    activerecord (6.1.3)
-      activemodel (= 6.1.3)
-      activesupport (= 6.1.3)
-    activesupport (6.1.3)
-      concurrent-ruby (~> 1.0, >= 1.0.2)
-      i18n (>= 1.6, < 2)
-      minitest (>= 5.1)
-      tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     concurrent-ruby (1.1.8)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
@@ -36,7 +42,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (~> 6.1.0)
+  activerecord!
   bundler
   i18n-active_record!
   minitest

@@ -8,8 +8,9 @@ def execute(command)
 end
 
 def bundle_options
-  opt = ''
-  opt +=  "--gemfile #{ENV['BUNDLE_GEMFILE']}" if ENV['BUNDLE_GEMFILE']
+  return '' unless ENV['BUNDLE_GEMFILE']
+
+  "--gemfile #{ENV['BUNDLE_GEMFILE']}"
 end
 
 def each_database(&block)
@@ -33,8 +34,12 @@ namespace :bundle do
     execute "bundle install #{bundle_options}"
   end
 
+  task update: :env do
+    execute "bundle update #{bundle_options}"
+  end
+
   task :install_all do
-    [nil, '3', '4', '5', '6', 'master'].each do |ar|
+    [nil, '3', '4', '5', '6', 'head'].each do |ar|
       opt = ar && "AR=#{ar}"
       execute "rake bundle:install #{opt}"
     end
