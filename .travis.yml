@@ -43,3 +43,5 @@ matrix:
       gemfile: gemfiles/Gemfile.rails_head
     - rvm: 2.4
       gemfile: gemfiles/Gemfile.rails_head
+    - rvm: 2.5
+      gemfile: gemfiles/Gemfile.rails_head
