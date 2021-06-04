@@ -6,6 +6,14 @@ class I18nActiveRecordMissingTest < I18n::TestCase
   end
 
   def setup
+    # TODO: either :
+    # - duplicate tests
+    # - launch them multiple times with different config, as we do for DB
+    # - test only things that are supposed to have changed
+    I18n::Backend::ActiveRecord.configure do |config|
+      config.cache_translations = true
+    end
+
     I18n.backend.store_translations(:en, :bar => 'Bar', :i18n => { :plural => { :keys => [:zero, :one, :other] } })
     I18n.backend = I18n::Backend::Chain.new(Backend.new, I18n.backend)
     I18n::Backend::ActiveRecord::Translation.delete_all

@@ -43,6 +43,8 @@ module I18n
 
             Translation.create(:locale => locale.to_s, :key => key.to_s, :value => value)
           end
+
+          reload! if ActiveRecord.config.cache_translations
         end
 
         def reload!
@@ -51,7 +53,7 @@ module I18n
         end
 
         def initialized?
-          !@translations.nil?
+          @translations && !@translations.nil?
         end
 
         def init_translations
@@ -72,6 +74,11 @@ module I18n
           end
           if key.last == '.'
             key = key[0..-2]
+          end
+
+          if ActiveRecord.config.cache_translations
+            keys = [locale.to_sym] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR).map(&:to_sym)
+            return translations.dig(*keys)
           end
 
           result = if key == ''
