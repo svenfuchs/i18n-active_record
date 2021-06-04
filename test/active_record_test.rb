@@ -2,6 +2,14 @@ require_relative './test_helper'
 
 class I18nBackendActiveRecordTest < I18n::TestCase
   def setup
+    # TODO: either :
+    # - duplicate tests
+    # - launch them multiple times with different config, as we do for DB
+    # - test only things that are supposed to have changed
+    I18n::Backend::ActiveRecord.configure do |config|
+      config.cache_translations = true
+    end
+
     I18n.backend = I18n::Backend::ActiveRecord.new
     store_translations(:en, :foo => { :bar => 'bar', :baz => 'baz' })
   end
