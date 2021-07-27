@@ -35,9 +35,7 @@ end
 
 To specify table name use:
 
-```
-rails g i18n:active_record:install MyTranslation
-```
+    $ rails g i18n:active_record:install MyTranslation
 
 With the translation model you will be able to manage your translation, and add new translations or languages through
 it.
