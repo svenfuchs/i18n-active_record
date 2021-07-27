@@ -69,7 +69,7 @@ require 'i18n/backend/active_record'
 I18n.backend = I18n::Backend::ActiveRecord.new
 ```
 
-You may also configure whether the ActiveRecord backend should use @destroy@ or @delete@ when cleaning up internally.
+You may also configure whether the ActiveRecord backend should use `destroy` or `delete` when cleaning up internally.
 
 ```ruby
 I18n::Backend::ActiveRecord.configure do |config|
