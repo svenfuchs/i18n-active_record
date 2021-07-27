@@ -1,4 +1,4 @@
-# I18n::Backe2nd::ActiveRecord
+# I18n::Backend::ActiveRecord
 
 This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n": http://github.com/svenfuchs/i18n.
 It is fully compatible with Rails 3, 4, 5 and 6.
