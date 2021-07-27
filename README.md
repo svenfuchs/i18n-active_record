@@ -62,9 +62,7 @@ end
 
 To perform a simpler installation use:
 
-```ruby
-rails g i18n:active_record:install --simple
-```
+    $ rails g i18n:active_record:install --simple
 
 It generates:
 
