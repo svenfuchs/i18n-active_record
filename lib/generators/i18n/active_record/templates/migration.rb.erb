@@ -1,17 +1,13 @@
 class <%= migration_class_name %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
-  def self.up
+  def change
     create_table :<%= name.tableize %> do |t|
       t.string :locale
       t.string :key
-      t.text   :value
-      t.text   :interpolations
-      t.boolean :is_proc, :default => false
+      t.text :value
+      t.text :interpolations
+      t.boolean :is_proc, default: false
 
       t.timestamps
     end
-  end
-
-  def self.down
-    drop_table :<%= name.tableize %>
   end
 end
