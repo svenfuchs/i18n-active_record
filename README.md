@@ -13,9 +13,7 @@ gem 'i18n-active_record', require: 'i18n/active_record'
 
 After updating your bundle, run the installer
 
-```ruby
-rails g i18n:active_record:install
-```
+    $ rails g i18n:active_record:install
 
 It creates a migration:
 
