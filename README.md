@@ -85,7 +85,7 @@ You can now use `I18n.t('Your String')` to lookup translations in the database.
 
 The interpolations field in the Translations table is used by I18n::Backend::ActiveRecord::Missing to store the interpolations seen the first time this Translation was requested.  This will help translators understand what interpolations to expect, and thus to include when providing the translations.
 
-The interpolations field is otherwise unused since the "value" in Translation.value is actually used for interpolation during actual translations.
+The `interpolations` field is otherwise unused since the "value" in `Translation#value` is actually used for interpolation during actual translations.
 
 ## Examples
 
