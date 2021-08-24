@@ -1,6 +1,6 @@
 class <%= migration_class_name %> < ActiveRecord::Migration[<%= ActiveRecord::Migration.current_version %>]
   def change
-    create_table :<%= name.tableize %> do |t|
+    create_table :<%= table_name %> do |t|
       t.string :locale
       t.string :key
       t.text :value
