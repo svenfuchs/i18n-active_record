@@ -8,7 +8,7 @@ require 'test_declarative'
 require 'i18n/active_record'
 require 'i18n/tests'
 
-require 'test/support/minitest_context'
+require_relative 'support/minitest_context'
 
 begin
   require 'active_record'
