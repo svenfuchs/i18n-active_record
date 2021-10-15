@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    i18n-active_record (0.4.0)
+    i18n-active_record (0.4.1)
       i18n (>= 0.5.0)
 
 GEM
@@ -18,6 +18,10 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    appraisal (2.4.1)
+      bundler
+      rake
+      thor (>= 0.14.0)
     concurrent-ruby (1.1.8)
     i18n (1.8.9)
       concurrent-ruby (~> 1.0)
@@ -25,11 +29,10 @@ GEM
     minitest (5.14.4)
     mocha (1.2.1)
       metaclass (~> 0.0.1)
-    mysql2 (0.5.2)
-    pg (0.20.0)
     rake (13.0.1)
     sqlite3 (1.3.13)
     test_declarative (0.0.5)
+    thor (1.1.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     zeitwerk (2.4.2)
@@ -39,12 +42,11 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  appraisal
   bundler
   i18n-active_record!
   minitest
   mocha
-  mysql2
-  pg
   rake
   sqlite3
   test_declarative
