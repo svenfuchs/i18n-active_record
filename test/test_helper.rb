@@ -2,11 +2,13 @@ $KCODE = 'u' if RUBY_VERSION <= '1.9'
 
 require 'bundler/setup'
 require 'minitest/autorun'
-require 'mocha/setup'
+require 'mocha/minitest'
 require 'test_declarative'
 
 require 'i18n/active_record'
 require 'i18n/tests'
+
+require 'test/support/minitest_context'
 
 begin
   require 'active_record'
@@ -48,6 +50,8 @@ class TEST_CASE
 end
 
 class I18n::TestCase < TEST_CASE
+  extend MiniTest::Context
+
   def setup
     I18n.enforce_available_locales = false
     I18n.available_locales = []

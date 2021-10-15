@@ -53,7 +53,7 @@ module I18n
         end
 
         def initialized?
-          @translations && !@translations.nil?
+          !@translations.nil?
         end
 
         def init_translations
