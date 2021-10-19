@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class I18nActiveRecordMissingTest < I18n::TestCase
+class I18nActiveRecordMissingCachedTest < I18n::TestCase
   class Backend < I18n::Backend::ActiveRecord
     include I18n::Backend::ActiveRecord::Missing
   end
@@ -11,7 +11,7 @@ class I18nActiveRecordMissingTest < I18n::TestCase
     I18n::Backend::ActiveRecord::Translation.delete_all
 
     I18n::Backend::ActiveRecord.configure do |config|
-      config.cache_translations = false
+      config.cache_translations = true
     end
   end
 

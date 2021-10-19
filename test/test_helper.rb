@@ -8,8 +8,6 @@ require 'test_declarative'
 require 'i18n/active_record'
 require 'i18n/tests'
 
-require_relative 'support/minitest_context'
-
 begin
   require 'active_record'
   ::ActiveRecord::Base.connection
@@ -50,8 +48,6 @@ class TEST_CASE
 end
 
 class I18n::TestCase < TEST_CASE
-  extend MiniTest::Context
-
   def setup
     I18n.enforce_available_locales = false
     I18n.available_locales = []

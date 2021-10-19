@@ -1,12 +1,12 @@
 require_relative './test_helper'
 
-class I18nBackendActiveRecordTest < I18n::TestCase
+class I18nBackendActiveRecordCachedTest < I18n::TestCase
   def setup
     I18n.backend = I18n::Backend::ActiveRecord.new
     store_translations(:en, :foo => { :bar => 'bar', :baz => 'baz' })
 
     I18n::Backend::ActiveRecord.configure do |config|
-      config.cache_translations = false
+      config.cache_translations = true
     end
   end
 
