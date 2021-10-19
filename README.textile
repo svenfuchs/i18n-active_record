@@ -65,6 +65,11 @@ By default the installer creates a new file in *config/initializers* named *i18n
     I18n::Backend::Simple.send(:include, I18n::Backend::Pluralization)
 
     I18n.backend = I18n::Backend::Chain.new(I18n::Backend::Simple.new, I18n.backend)
+
+    I18n::Backend::ActiveRecord.configure do |config|
+      # config.cache_translations = true # defaults to false
+      # config.cleanup_with_destroy = true # defaults to false
+    end
   end
 </pre>
 
@@ -79,6 +84,11 @@ It generates:
 <pre>
   require 'i18n/backend/active_record'
   I18n.backend = I18n::Backend::ActiveRecord.new
+
+  I18n::Backend::ActiveRecord.configure do |config|
+    # config.cache_translations = true # defaults to false
+    # config.cleanup_with_destroy = true # defaults to false
+  end
 </pre>
 
 You may also configure whether the ActiveRecord backend should use @destroy@ or @delete@ when cleaning up internally.
