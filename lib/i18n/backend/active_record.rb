@@ -82,7 +82,7 @@ module I18n
               self.send(:init_translations)
             end
 
-            keys = ([locale.to_sym] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
+            keys = ([locale] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
             return @translations.dig(*keys)
           end
 
