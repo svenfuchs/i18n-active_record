@@ -4,7 +4,7 @@ require 'bundler/gem_tasks'
 
 def execute(command)
   puts command
-  system command
+  system command, exception: true
 end
 
 def bundle_options
