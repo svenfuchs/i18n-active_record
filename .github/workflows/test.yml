@@ -36,8 +36,10 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
+        # os: [ubuntu-latest, macos-latest]
+        # ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
+        os: [ubuntu-latest]
+        ruby: [2.7]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
