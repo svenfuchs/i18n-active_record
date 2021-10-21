@@ -17,7 +17,7 @@ rescue ::ActiveRecord::ConnectionNotEstablished
   require 'i18n/backend/active_record'
   case ENV['DB']
   when 'postgres'
-    ::ActiveRecord::Base.establish_connection adapter: 'postgresql', database: 'i18n_unittest', username: ENV['PG_USER'] || 'i18n', password: '', host: 'localhost'
+    ::ActiveRecord::Base.establish_connection adapter: 'postgresql', database: 'i18n_unittest', username: ENV['PG_USER'] || 'postgres', password: '', host: 'localhost'
   when 'mysql'
     ::ActiveRecord::Base.establish_connection adapter: 'mysql2', database: 'i18n_unittest', username: 'root', password: '', host: 'localhost'
   else

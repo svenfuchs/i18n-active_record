@@ -1,0 +1,48 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: ['**']
+
+jobs:
+  test:
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_DB: i18n_unittest
+          MYSQL_USER: root
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_PASSWORD: ''
+        ports:
+          - "3306:3306"
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - run: bundle exec rake
