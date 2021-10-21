@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description  = "I18n ActiveRecord backend. Allows to store translations in a database using ActiveRecord, e.g. for providing a web-interface for managing translations."
   s.license      = 'MIT'
 
-  s.files        = Dir.glob("{lib,test}/**/**") + %w(MIT-LICENSE README.textile Rakefile)
+  s.files        = Dir.glob("{lib,test}/**/**") + %w(MIT-LICENSE README.md Rakefile)
   s.platform     = Gem::Platform::RUBY
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
