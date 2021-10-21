@@ -12,6 +12,7 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_DB: i18n_unittest
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
