@@ -28,8 +28,8 @@ rescue ::ActiveRecord::ConnectionNotEstablished
     ::ActiveRecord::Base.establish_connection(
       adapter: 'mysql2',
       database: 'i18n_unittest',
-      username: 'root',
-      password: '',
+      username: ENV['MYSQL_USER'] || 'root',
+      password: ENV['MYSQL_PASSWORD'] || '',
       host: 'localhost'
     )
   else

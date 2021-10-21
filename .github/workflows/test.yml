@@ -21,13 +21,10 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_HOST: 127.0.0.1
           MYSQL_DB: i18n_unittest
-          MYSQL_USER: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_PASSWORD: ''
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
         ports:
-          - "3306:3306"
+          - '3306:3306'
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
