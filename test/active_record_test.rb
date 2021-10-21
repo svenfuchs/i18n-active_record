@@ -4,10 +4,6 @@ class I18nBackendActiveRecordTest < I18n::TestCase
   def setup
     I18n.backend = I18n::Backend::ActiveRecord.new
     store_translations(:en, :foo => { :bar => 'bar', :baz => 'baz' })
-
-    I18n::Backend::ActiveRecord.configure do |config|
-      config.cache_translations = false
-    end
   end
 
   def teardown
@@ -17,6 +13,7 @@ class I18nBackendActiveRecordTest < I18n::TestCase
   end
 
   [false, true].each do |cache_translations|
+    I18n::Backend::ActiveRecord.config.cache_translations = cache_translations
 
     test "store_translations does not allow ambiguous keys (1), Cache Translations: #{cache_translations}" do
       I18n::Backend::ActiveRecord::Translation.delete_all

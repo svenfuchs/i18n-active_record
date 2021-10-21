@@ -78,4 +78,8 @@ class I18n::TestCase < TEST_CASE
   def locales_dir
     File.dirname(__FILE__) + '/test_data/locales'
   end
+
+  def self.cache_suffix
+    "Cache Translations: #{I18n::Backend::ActiveRecord.config.cache_translations}"
+  end
 end
