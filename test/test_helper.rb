@@ -15,6 +15,7 @@ rescue LoadError => e
   puts "can't use ActiveRecord backend because: #{e.message}"
 rescue ::ActiveRecord::ConnectionNotEstablished
   require 'i18n/backend/active_record'
+
   case ENV['DB']
   when 'postgres'
     ::ActiveRecord::Base.establish_connection(
@@ -35,6 +36,7 @@ rescue ::ActiveRecord::ConnectionNotEstablished
   else
     ::ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
   end
+
   ::ActiveRecord::Migration.verbose = false
   ::ActiveRecord::Schema.define(version: 1) do
     create_table :translations, force: true do |t|
