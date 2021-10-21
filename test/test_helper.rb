@@ -79,7 +79,25 @@ class I18n::TestCase < TEST_CASE
     File.dirname(__FILE__) + '/test_data/locales'
   end
 
-  def self.cache_suffix
-    "Cache Translations: #{I18n::Backend::ActiveRecord.config.cache_translations}"
+  def self.test(*args, **opts, &block)
+    if !opts.has_key?(:cache_translations)
+      super(*args, &block)
+    else
+      if opts[:cache_translations] != I18n::Backend::ActiveRecord.config.cache_translations
+        cache_translations_was = I18n::Backend::ActiveRecord.config.cache_translations
+
+        I18n::Backend::ActiveRecord.config.cache_translations = opts[:cache_translations]
+      end
+
+      cache_suffix = "CacheTranslations:#{I18n::Backend::ActiveRecord.config.cache_translations}"
+
+      args[0] = [args[0], cache_suffix].join(" ")
+
+      super(*args, &block)
+
+      if cache_translations_was
+        I18n::Backend::ActiveRecord.config.cache_translations = cache_translations_was
+      end
+    end
   end
 end

@@ -113,6 +113,10 @@ h2. Examples
 
 * http://collectiveidea.com/blog/archives/2016/05/31/beyond-yml-files-dynamic-translations/
 
+h2. Contributing
+
+To run the test suite for all databases use `rake test` or using only SQLite with `rake sqlite:test`
+
 h2. Maintainers
 
 * Sven Fuchs

@@ -14,8 +14,7 @@ def bundle_options
 end
 
 def each_database(&block)
-  #['sqlite', 'postgres', 'mysql'].each &block
-  ['sqlite'].each &block
+  ['sqlite', 'postgres', 'mysql'].each &block
 end
 
 namespace :bundle do

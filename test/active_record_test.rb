@@ -13,9 +13,7 @@ class I18nBackendActiveRecordTest < I18n::TestCase
   end
 
   [false, true].each do |cache_translations|
-    I18n::Backend::ActiveRecord.config.cache_translations = cache_translations
-
-    test "store_translations does not allow ambiguous keys (1), Cache Translations: #{cache_translations}" do
+    test "store_translations does not allow ambiguous keys (1)", cache_translations: cache_translations do
       I18n::Backend::ActiveRecord::Translation.delete_all
       I18n.backend.store_translations(:en, :foo => 'foo')
       I18n.backend.store_translations(:en, :foo => { :bar => 'bar' })
@@ -27,7 +25,7 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_equal({ :bar => 'bar', :baz => 'baz' }, I18n.t(:foo))
     end
 
-    test "store_translations does not allow ambiguous keys (2), Cache Translations: #{cache_translations}" do
+    test "store_translations does not allow ambiguous keys (2)", cache_translations: cache_translations do
       I18n::Backend::ActiveRecord::Translation.delete_all
       I18n.backend.store_translations(:en, :foo => { :bar => 'bar' })
       I18n.backend.store_translations(:en, :foo => { :baz => 'baz' })
@@ -39,21 +37,21 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_equal 'foo', I18n.t(:foo)
     end
 
-    test "can store translations with keys that are translations containing special chars, Cache Translations: #{cache_translations}" do
+    test "can store translations with keys that are translations containing special chars", cache_translations: cache_translations do
       I18n.backend.store_translations(:es, :"Pagina's" => "Pagina's" )
       assert_equal "Pagina's", I18n.t(:"Pagina's", :locale => :es)
     end
 
-    test "missing translations table does not cause an error in #available_locales, Cache Translations: #{cache_translations}" do
+    test "missing translations table does not cause an error in #available_locales", cache_translations: cache_translations do
       I18n::Backend::ActiveRecord::Translation.expects(:available_locales).raises(::ActiveRecord::StatementInvalid, 'msg')
       assert_equal [], I18n.backend.available_locales
     end
 
-    test "expand_keys, Cache Translations: #{cache_translations}" do
+    test "expand_keys", cache_translations: cache_translations do
       assert_equal %w(foo foo.bar foo.bar.baz), I18n.backend.send(:expand_keys, :'foo.bar.baz')
     end
 
-    test "available_locales returns uniq locales, Cache Translations: #{cache_translations}" do
+    test "available_locales returns uniq locales", cache_translations: cache_translations do
       I18n::Backend::ActiveRecord::Translation.delete_all
       I18n.backend.store_translations(:en, :foo => { :bar => 'bar' })
       I18n.backend.store_translations(:en, :foo => { :baz => 'baz' })
@@ -68,11 +66,11 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_includes available_locales, :uk
     end
 
-    test "the default configuration has cleanup_with_destroy == false, Cache Translations: #{cache_translations}" do
+    test "the default configuration has cleanup_with_destroy == false", cache_translations: cache_translations do
       refute I18n::Backend::ActiveRecord.config.cleanup_with_destroy
     end
 
-    test "the configuration supports cleanup_with_destroy being set, Cache Translations: #{cache_translations}" do
+    test "the configuration supports cleanup_with_destroy being set", cache_translations: cache_translations do
       I18n::Backend::ActiveRecord.configure do |config|
         config.cleanup_with_destroy = true
       end
@@ -80,24 +78,24 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert I18n::Backend::ActiveRecord.config.cleanup_with_destroy
     end
 
-    test "fetching subtree of translations, Cache Translations: #{cache_translations}" do
+    test "fetching subtree of translations", cache_translations: cache_translations do
       I18n::Backend::ActiveRecord::Translation.delete_all
       I18n.backend.store_translations(:en, foo: { bar: { fizz: 'buzz', spuz: 'zazz' }, baz: { fizz: 'buzz' } })
       assert_equal I18n.t(:foo), { bar: { fizz: 'buzz', spuz: 'zazz' }, baz: { fizz: 'buzz' } }
     end
 
-    test "build_translation_hash_by_key, Cache Translations: #{cache_translations}" do
+    test "build_translation_hash_by_key", cache_translations: cache_translations do
       translation = I18n::Backend::ActiveRecord::Translation.new(value: 'translation', key: 'foo.bar.fizz.buzz')
       expected_hash = { 'bar' => { 'fizz' => { 'buzz' => 'translation' } } }
       assert_equal I18n.backend.send(:build_translation_hash_by_key, 'foo', translation), expected_hash
     end
 
-    test "returning all keys via ., Cache Translations: #{cache_translations}" do
+    test "returning all keys via .", cache_translations: cache_translations do
       expected_hash = {:foo => { :bar => 'bar', :baz => 'baz' }}
       assert_equal expected_hash, I18n.t('.')
     end
 
-    test "accessing keys with a trailing/leading period, Cache Translations: #{cache_translations}" do
+    test "accessing keys with a trailing/leading period", cache_translations: cache_translations do
       expected_hash = { :bar => 'bar', :baz => 'baz' }
       assert_equal expected_hash, I18n.t('foo')
       assert_equal expected_hash, I18n.t('.foo')
@@ -106,14 +104,14 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_equal expected_hash, I18n.t('.foo.')
     end
 
-    test "returning all keys via . when there are no keys, Cache Translations: #{cache_translations}" do
+    test "returning all keys via . when there are no keys", cache_translations: cache_translations do
       I18n.t('.') # Fixes test flakiness by loading available locales
       I18n::Backend::ActiveRecord::Translation.destroy_all
 
       assert_equal "translation missing: en.no key", I18n.t('.')
     end
 
-    test "intially unitinitialized, Cache Translations: #{cache_translations}" do
+    test "intially unitinitialized", cache_translations: cache_translations do
       refute I18n.backend.initialized?
       I18n.backend.init_translations
       assert I18n.backend.initialized?
@@ -123,20 +121,18 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert I18n.backend.initialized?
     end
 
-    test "translations returns all translations, Cache Translations: #{cache_translations}" do
+    test "translations returns all translations", cache_translations: cache_translations do
       expected_hash = { :en => { :foo => { :bar => 'bar', :baz => 'baz' } } }
       I18n.backend.init_translations
       assert_equal expected_hash, I18n.backend.send(:translations)
       assert I18n.backend.initialized?
     end
 
-    test "translations initialized with do_init argument, Cache Translations: #{cache_translations}" do
+    test "translations initialized with do_init argument", cache_translations: cache_translations do
       expected_hash = { :en => { :foo => { :bar => 'bar', :baz => 'baz' } } }
       refute I18n.backend.initialized?
       assert_equal expected_hash, I18n.backend.send(:translations, { do_init: true })
       assert I18n.backend.initialized?
     end
-
   end
-
 end
