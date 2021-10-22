@@ -36,8 +36,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
-        ruby: [2.7]
+        ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
         rails: [3, 4, 5, 6, 'head']
         exclude:
           - ruby: 2.3
@@ -55,6 +54,14 @@ jobs:
           - ruby: 2.7
             rails: 3
           - ruby: 2.7
+            rails: 4
+          - ruby: 3.0
+            rails: 3
+          - ruby: 3.0
+            rails: 4
+          - ruby: head
+            rails: 3
+          - ruby: head
             rails: 4
     runs-on: ubuntu-latest
     env:
