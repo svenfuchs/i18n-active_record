@@ -31,7 +31,7 @@ rescue ::ActiveRecord::ConnectionNotEstablished
       database: 'i18n_unittest',
       username: ENV['MYSQL_USER'] || 'root',
       password: ENV['MYSQL_PASSWORD'] || '',
-      host: 'localhost'
+      host: '127.0.0.1'
     )
   else
     ::ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
