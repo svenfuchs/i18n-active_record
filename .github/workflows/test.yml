@@ -38,9 +38,11 @@ jobs:
       matrix:
         # os: [ubuntu-latest, macos-latest]
         # ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
-        os: [ubuntu-latest]
         ruby: [2.7]
-    runs-on: ${{ matrix.os }}
+        rails_version: [3, 4, 5, 6, 'head']
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/Gemfile.rails_${{ matrix.rails_version }}
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
