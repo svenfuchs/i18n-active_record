@@ -54,6 +54,8 @@ jobs:
             rails: head
           - ruby: 2.7
             rails: 3
+          - ruby: 2.7
+            rails: 4
     runs-on: ubuntu-latest
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/Gemfile.rails_${{ matrix.rails }}
