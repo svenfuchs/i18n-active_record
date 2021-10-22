@@ -63,6 +63,7 @@ jobs:
             rails: 3
           - ruby: head
             rails: 4
+    name: 'Ruby: ${{ matrix.ruby }}, Rails: ${{ matrix.rails }}'
     runs-on: ubuntu-latest
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/Gemfile.rails_${{ matrix.rails }}
