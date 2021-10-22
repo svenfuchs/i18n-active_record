@@ -34,7 +34,7 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         ruby: [2.3, 2.4, 2.5, 2.6, 2.7, 3.0, 'head']
         rails: [3, 4, 5, 6, 'head']
