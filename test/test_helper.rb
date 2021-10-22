@@ -85,6 +85,14 @@ class I18n::TestCase < TEST_CASE
     I18n.backend.store_translations(locale, data)
   end
 
+  def update_attributes(record, attrs)
+    if ActiveRecord::VERSION::MAJOR < 4
+      record.update_attributes(attrs)
+    else
+      record.update(attrs)
+    end
+  end
+
   def locales_dir
     File.dirname(__FILE__) + '/test_data/locales'
   end
