@@ -11,6 +11,7 @@ class I18nBackendActiveRecordTest < I18n::TestCase
   def teardown
     I18n::Backend::ActiveRecord::Translation.destroy_all
     I18n::Backend::ActiveRecord.instance_variable_set :@config, I18n::Backend::ActiveRecord::Configuration.new
+    
     super
   end
 
