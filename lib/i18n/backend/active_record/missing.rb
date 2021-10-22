@@ -36,7 +36,7 @@ module I18n
         include Flatten
 
         def store_default_translations(locale, key, options = {})
-          count, scope, default, separator = options.values_at(:count, :scope, :default, :separator)
+          count, scope, _, separator = options.values_at(:count, :scope, :default, :separator)
           separator ||= I18n.default_separator
           key = normalize_flat_keys(locale, key, scope, separator)
 
