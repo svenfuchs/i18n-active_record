@@ -24,7 +24,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_DB: i18n_unittest
+          MYSQL_DATABASE: i18n_unittest
           MYSQL_ALLOW_EMPTY_PASSWORD: true
         ports:
           - '3306:3306'
