@@ -67,37 +67,11 @@ class I18n::TestCase < TEST_CASE
     super
   end
 
-  def translations
-    I18n.backend.instance_variable_get(:@translations)
-  end
-
   def store_translations(locale, data)
     I18n.backend.store_translations(locale, data)
   end
 
   def locales_dir
     File.dirname(__FILE__) + '/test_data/locales'
-  end
-
-  def self.test(*args, **opts, &block)
-    if !opts.has_key?(:cache_translations)
-      super(*args, &block)
-    else
-      if opts[:cache_translations] != I18n::Backend::ActiveRecord.config.cache_translations
-        cache_translations_was = I18n::Backend::ActiveRecord.config.cache_translations
-
-        I18n::Backend::ActiveRecord.config.cache_translations = opts[:cache_translations]
-      end
-
-      cache_suffix = "CacheTranslations:#{I18n::Backend::ActiveRecord.config.cache_translations}"
-
-      args[0] = [args[0], cache_suffix].join(" ")
-
-      super(*args, &block)
-
-      if cache_translations_was
-        I18n::Backend::ActiveRecord.config.cache_translations = cache_translations_was
-      end
-    end
   end
 end

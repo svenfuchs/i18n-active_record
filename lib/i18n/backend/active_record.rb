@@ -78,12 +78,11 @@ module I18n
           end
 
           if ActiveRecord.config.cache_translations
-            if @translations.nil? || @translations.empty?
-              self.send(:init_translations)
-            end
+            init_translations if @translations.nil? || @translations.empty?
 
             keys = ([locale] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
-            return @translations.dig(*keys)
+
+            return translations.dig(*keys)
           end
 
           result = if key == ''
