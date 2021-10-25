@@ -13,5 +13,6 @@ if Translation.table_exists?
 end
 
 I18n::Backend::ActiveRecord.configure do |config|
+  # config.cache_translations = true # defaults to false
   # config.cleanup_with_destroy = true # defaults to false
 end

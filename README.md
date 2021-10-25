@@ -91,6 +91,10 @@ The `interpolations` field is otherwise unused since the "value" in `Translation
 
 * http://collectiveidea.com/blog/archives/2016/05/31/beyond-yml-files-dynamic-translations/
 
+## Contributing
+
+To run the test suite for all databases use `rake test` or using only SQLite with `rake sqlite:test`
+
 ## Maintainers
 
 * Sven Fuchs

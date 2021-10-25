@@ -53,6 +53,7 @@ module I18n
 
         serialize :value
         serialize :interpolations, Array
+        after_commit :invalidate_translations_cache
 
         class << self
           def locale(locale)
@@ -114,6 +115,10 @@ module I18n
           end
 
           write_attribute(:value, value)
+        end
+
+        def invalidate_translations_cache
+          I18n.backend.reload! if I18n::Backend::ActiveRecord.config.cache_translations
         end
       end
     end

@@ -2,7 +2,7 @@ $KCODE = 'u' if RUBY_VERSION <= '1.9'
 
 require 'bundler/setup'
 require 'minitest/autorun'
-require 'mocha/setup'
+require 'mocha/minitest'
 require 'test_declarative'
 
 require 'i18n/active_record'
@@ -65,10 +65,6 @@ class I18n::TestCase < TEST_CASE
     I18n.load_path = []
     I18n.backend = nil
     super
-  end
-
-  def translations
-    I18n.backend.instance_variable_get(:@translations)
   end
 
   def store_translations(locale, data)
