@@ -49,8 +49,12 @@ jobs:
             rails: 4
           - ruby: 3.0
             rails: 4
+          - ruby: 3.0
+            rails: 5
           - ruby: head
             rails: 4
+          - ruby: head
+            rails: 5
     name: 'Ruby: ${{ matrix.ruby }}, Rails: ${{ matrix.rails }}'
     runs-on: ubuntu-latest
     env:
