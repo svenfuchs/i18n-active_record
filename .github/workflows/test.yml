@@ -68,4 +68,13 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 1
-      - run: bundle exec rake
+      - name: Run tests for SQLite
+        run: bundle exec rake
+      - name: Run tests for PostgreSQL
+        env:
+          DB: postgres
+        run: bundle exec rake
+      - name: Run tests for MySQL
+        env:
+          DB: mysql
+        run: bundle exec rake
