@@ -1,0 +1,80 @@
+name: CI Tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: ['**']
+
+jobs:
+  test:
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_DB: i18n_unittest
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_DATABASE: i18n_unittest
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
+        ports:
+          - '3306:3306'
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    strategy:
+      fail-fast: true
+      matrix:
+        ruby: [2.4, 2.5, 2.6, 2.7, 3.0, 'head']
+        rails: [4, 5, 6, 'head']
+        exclude:
+          - ruby: 2.4
+            rails: 6
+          - ruby: 2.4
+            rails: head
+          - ruby: 2.5
+            rails: head
+          - ruby: 2.6
+            rails: head
+          - ruby: 2.7
+            rails: 4
+          - ruby: 3.0
+            rails: 4
+          - ruby: 3.0
+            rails: 5
+          - ruby: head
+            rails: 4
+          - ruby: head
+            rails: 5
+    name: 'Ruby: ${{ matrix.ruby }}, Rails: ${{ matrix.rails }}'
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/Gemfile.rails_${{ matrix.rails }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          cache-version: 1
+      - name: Run tests for SQLite
+        run: bundle exec rake
+      - name: Run tests for PostgreSQL
+        env:
+          DB: postgres
+        run: bundle exec rake
+      - name: Run tests for MySQL
+        env:
+          DB: mysql
+        run: bundle exec rake

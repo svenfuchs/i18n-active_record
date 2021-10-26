@@ -3,6 +3,7 @@ require 'test_helper'
 class I18nActiveRecordApiTest < I18n::TestCase
   def setup
     I18n.backend = I18n::Backend::ActiveRecord.new
+
     super
   end
 

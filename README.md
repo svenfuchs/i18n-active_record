@@ -1,7 +1,7 @@
-# I18n::Backend::ActiveRecord
+# I18n::Backend::ActiveRecord ![Build Status](https://github.com/svenfuchs/i18n-active_record/actions/workflows/test.yml/badge.svg)
 
 This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n": http://github.com/svenfuchs/i18n.
-It is fully compatible with Rails 3, 4, 5 and 6.
+It is fully compatible with Rails 4, 5 and 6.
 
 ## Installation
 
@@ -77,11 +77,37 @@ I18n::Backend::ActiveRecord.configure do |config|
 end
 ```
 
+To configure the ActiveRecord backend to cache translations(might be useful in production) use:
+
+```ruby
+I18n::Backend::ActiveRecord.configure do |config|
+  config.cache_translations = true # defaults to false
+end
+```
+
 ## Usage
 
 You can now use `I18n.t('Your String')` to lookup translations in the database.
 
-## Missing Translations -> Interpolations
+## Missing Translations
+
+### Usage
+
+In order to make the `I18n::Backend::ActiveRecord::Missing` module working correctly pluralization rules should be configured properly.
+The `i18n.plural.keys` translation key should be present in any of the backends.
+(See https://github.com/svenfuchs/i18n-active_record/blob/master/lib/i18n/backend/active_record/missing.rb for more information)
+
+```yaml
+en:
+  i18n:
+    plural:
+      keys:
+        - :zero
+        - :one
+        - :other
+```
+
+### Interpolations
 
 The `interpolations` field in the `translations` table is used by `I18n::Backend::ActiveRecord::Missing` to store the interpolations seen the first time this Translation was requested.  This will help translators understand what interpolations to expect, and thus to include when providing the translations.
 
@@ -93,7 +119,20 @@ The `interpolations` field is otherwise unused since the "value" in `Translation
 
 ## Contributing
 
-To run the test suite for all databases use `rake test` or using only SQLite with `rake sqlite:test`
+### Test suite
+
+The test suite can be run with:
+
+    bundle exec rake
+
+By default it runs the tests for SQLite database, to specify a database the `DB` env variable can be used:
+
+    DB=postgres bundle exec rake
+    DB=mysql bundle exec rake
+
+There are multiple gemfiles(mostly used for CI) and they can be activated with the `--gemfile` option:
+
+    bundle exec --gemfile gemfiles/Gemfile.rails_4 rake
 
 ## Maintainers
 

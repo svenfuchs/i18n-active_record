@@ -57,12 +57,12 @@ module I18n
 
         class << self
           def locale(locale)
-            where(:locale => locale.to_s)
+            where(locale: locale.to_s)
           end
 
           def lookup(keys, *separator)
             column_name = connection.quote_column_name('key')
-            keys = Array(keys).map! { |key| key.to_s }
+            keys = Array(keys).map!(&:to_s)
 
             unless separator.empty?
               warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
@@ -91,7 +91,7 @@ module I18n
         end
 
         def interpolates?(key)
-          self.interpolations.include?(key) if self.interpolations
+          interpolations&.include?(key)
         end
 
         def value
