@@ -9,6 +9,9 @@ module I18n
       autoload :Translation,   'i18n/backend/active_record/translation'
       autoload :Configuration, 'i18n/backend/active_record/configuration'
 
+      include Base
+      include Flatten
+
       class << self
         def configure
           yield(config) if block_given?
@@ -19,114 +22,111 @@ module I18n
         end
       end
 
-      module Implementation
-        include Base, Flatten
+      def initialize(*args)
+        super
 
-        def available_locales
-          begin
-            Translation.available_locales
-          rescue ::ActiveRecord::StatementInvalid
-            []
+        reload!
+      end
+
+      def available_locales
+        Translation.available_locales
+      rescue ::ActiveRecord::StatementInvalid
+        []
+      end
+
+      def store_translations(locale, data, options = {})
+        escape = options.fetch(:escape, true)
+
+        flatten_translations(locale, data, escape, false).each do |key, value|
+          translation = Translation.locale(locale).lookup(expand_keys(key))
+
+          if ActiveRecord.config.cleanup_with_destroy
+            translation.destroy_all
+          else
+            translation.delete_all
           end
+
+          Translation.create(locale: locale.to_s, key: key.to_s, value: value)
         end
 
-        def store_translations(locale, data, options = {})
-          escape = options.fetch(:escape, true)
-          flatten_translations(locale, data, escape, false).each do |key, value|
-            translation = Translation.locale(locale).lookup(expand_keys(key))
+        reload! if ActiveRecord.config.cache_translations
+      end
 
-            if ActiveRecord.config.cleanup_with_destroy
-              translation.destroy_all
-            else
-              translation.delete_all
-            end
+      def reload!
+        @translations = nil
 
-            Translation.create(:locale => locale.to_s, :key => key.to_s, :value => value)
-          end
+        self
+      end
 
-          reload! if ActiveRecord.config.cache_translations
-        end
+      def initialized?
+        !@translations.nil?
+      end
 
-        def reload!
-          @translations = nil
+      def init_translations
+        @translations = Translation.to_hash
+      end
 
-          self
-        end
-
-        def initialized?
-          !@translations.nil?
-        end
-
-        def init_translations
-          @translations = Translation.to_hash
-        end
-
-        def translations(do_init: false)
-          init_translations if do_init || !initialized?
-          @translations ||= {}
-        end
+      def translations(do_init: false)
+        init_translations if do_init || !initialized?
+        @translations ||= {}
+      end
 
       protected
 
-        def lookup(locale, key, scope = [], options = {})
-          key = normalize_flat_keys(locale, key, scope, options[:separator])
-          if key.first == '.'
-            key = key[1..-1]
-          end
-          if key.last == '.'
-            key = key[0..-2]
-          end
+      def lookup(locale, key, scope = [], options = {})
+        key = normalize_flat_keys(locale, key, scope, options[:separator])
+        key = key[1..-1] if key.first == '.'
+        key = key[0..-2] if key.last == '.'
 
-          if ActiveRecord.config.cache_translations
-            init_translations if @translations.nil? || @translations.empty?
+        if ActiveRecord.config.cache_translations
+          init_translations if @translations.nil? || @translations.empty?
 
-            keys = ([locale] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
+          keys = ([locale] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
 
-            return translations.dig(*keys)
-          end
-
-          result = if key == ''
-            Translation.locale(locale).all
-          else
-            Translation.locale(locale).lookup(key)
-          end
-
-          if result.empty?
-            nil
-          elsif result.first.key == key
-            result.first.value
-          else
-            result = result.inject({}) do |hash, translation|
-              hash.deep_merge build_translation_hash_by_key(key, translation)
-            end
-            result.deep_symbolize_keys
-          end
+          return translations.dig(*keys)
         end
 
-        def build_translation_hash_by_key(lookup_key, translation)
-          hash = {}
-          if lookup_key == ''
-            chop_range = 0..-1
-          else
-            chop_range = (lookup_key.size + FLATTEN_SEPARATOR.size)..-1
-          end
-          translation_nested_keys = translation.key.slice(chop_range).split(FLATTEN_SEPARATOR)
-          translation_nested_keys.each.with_index.inject(hash) do |iterator, (key, index)|
-            iterator[key] = translation_nested_keys[index + 1] ?  {} : translation.value
-            iterator[key]
-          end
-          hash
+        result = if key == ''
+          Translation.locale(locale).all
+        else
+          Translation.locale(locale).lookup(key)
         end
 
-        # For a key :'foo.bar.baz' return ['foo', 'foo.bar', 'foo.bar.baz']
-        def expand_keys(key)
-          key.to_s.split(FLATTEN_SEPARATOR).inject([]) do |keys, key|
-            keys << [keys.last, key].compact.join(FLATTEN_SEPARATOR)
+        if result.empty?
+          nil
+        elsif result.first.key == key
+          result.first.value
+        else
+          result = result.inject({}) do |hash, translation|
+            hash.deep_merge build_translation_hash_by_key(key, translation)
           end
+          result.deep_symbolize_keys
         end
       end
 
-      include Implementation
+      def build_translation_hash_by_key(lookup_key, translation)
+        hash = {}
+
+        chop_range = if lookup_key == ''
+          0..-1
+        else
+          (lookup_key.size + FLATTEN_SEPARATOR.size)..-1
+        end
+        translation_nested_keys = translation.key.slice(chop_range).split(FLATTEN_SEPARATOR)
+        translation_nested_keys.each.with_index.inject(hash) do |iterator, (key, index)|
+          iterator[key] = translation_nested_keys[index + 1] ?  {} : translation.value
+          iterator[key]
+        end
+
+        hash
+      end
+
+      # For a key :'foo.bar.baz' return ['foo', 'foo.bar', 'foo.bar.baz']
+      def expand_keys(key)
+        key.to_s.split(FLATTEN_SEPARATOR).inject([]) do |keys, k|
+          keys << [keys.last, k].compact.join(FLATTEN_SEPARATOR)
+        end
+      end
     end
   end
 end
