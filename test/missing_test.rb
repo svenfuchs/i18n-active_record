@@ -60,7 +60,7 @@ class I18nActiveRecordMissingTest < I18n::TestCase
 
     test 'creates one stub per pluralization' do
       I18n.t('foo', count: 999)
-      translations = I18n::Backend::ActiveRecord::Translation.locale(:en).where key: %w[foo.zero foo.one foo.other]
+      translations = I18n::Backend::ActiveRecord::Translation.locale(:en).where(key: %w[foo.zero foo.one foo.other])
 
       assert_equal 3, translations.length
     end
@@ -81,8 +81,9 @@ class I18nActiveRecordMissingTest < I18n::TestCase
 
     test 'creates a stub per pluralization when a custom separator is used' do
       I18n.t('foo|bar', count: 999, separator: '|')
-      translations = I18n::Backend::ActiveRecord::Translation.locale(:en).where key: %w[foo.bar.zero foo.bar.one
-                                                                                        foo.bar.other]
+      translations = I18n::Backend::ActiveRecord::Translation
+        .locale(:en)
+        .where(key: %w[foo.bar.zero foo.bar.one foo.bar.other])
 
       assert_equal 3, translations.length
     end

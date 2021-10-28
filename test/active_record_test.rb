@@ -54,8 +54,9 @@ class I18nBackendActiveRecordTest < I18n::TestCase
     end
 
     test 'missing translations table does not cause an error in #available_locales' do
-      I18n::Backend::ActiveRecord::Translation.expects(:available_locales).raises(::ActiveRecord::StatementInvalid,
-                                                                                  'msg')
+      I18n::Backend::ActiveRecord::Translation
+        .expects(:available_locales)
+        .raises(::ActiveRecord::StatementInvalid, 'msg')
       assert_equal [], I18n.backend.available_locales
     end
 

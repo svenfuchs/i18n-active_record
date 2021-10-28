@@ -9,12 +9,19 @@ AllCops:
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
-Style/Documentation:
-  Enabled: false
-
 Layout/CaseIndentation:
   EnforcedStyle: end
 
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/*'
+
+Style/Documentation:
+  Enabled: false
 
