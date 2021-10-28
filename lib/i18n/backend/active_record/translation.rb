@@ -110,11 +110,11 @@ module I18n
         end
 
         def value=(value)
-          value = case value
+          case value
           when false
-            FALSY_CHAR
+            value = FALSY_CHAR
           when true
-            TRUTHY_CHAR
+            value = TRUTHY_CHAR
           end
 
           write_attribute(:value, value)
