@@ -1,4 +1,4 @@
-# I18n::Backend::ActiveRecord ![Build Status](https://github.com/svenfuchs/i18n-active_record/actions/workflows/test.yml/badge.svg)
+# I18n::Backend::ActiveRecord [![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop) [![Tests Status](https://github.com/svenfuchs/i18n-active_record/actions/workflows/test.yml/badge.svg)](https://github.com/svenfuchs/i18n-active_record/actions) [![Linter Status](https://github.com/svenfuchs/i18n-active_record/actions/workflows/linter.yml/badge.svg)](https://github.com/svenfuchs/i18n-active_record/actions)
 
 This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n": http://github.com/svenfuchs/i18n.
 It is fully compatible with Rails 4, 5 and 6.
