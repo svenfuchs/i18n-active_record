@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'i18n/backend/base'
 require 'i18n/backend/active_record/translation'
 
@@ -75,7 +77,7 @@ module I18n
 
       def lookup(locale, key, scope = [], options = {})
         key = normalize_flat_keys(locale, key, scope, options[:separator])
-        key = key[1..-1] if key.first == '.'
+        key = key[1..] if key.first == '.'
         key = key[0..-2] if key.last == '.'
 
         if ActiveRecord.config.cache_translations
