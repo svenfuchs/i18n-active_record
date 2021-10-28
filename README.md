@@ -130,9 +130,9 @@ By default it runs the tests for SQLite database, to specify a database the `DB`
     DB=postgres bundle exec rake
     DB=mysql bundle exec rake
 
-There are multiple gemfiles(mostly used for CI) and they can be activated with the `--gemfile` option:
+To run tests for a specific rails version see [Appraisal](https://github.com/thoughtbot/appraisal):
 
-    bundle exec --gemfile gemfiles/Gemfile.rails_4 rake
+    bundle exec appraisal rails-4 rake test
 
 ## Maintainers
 
