@@ -1,4 +1,4 @@
-$KCODE = 'u' if RUBY_VERSION <= '1.9'
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require 'minitest/autorun'
@@ -46,13 +46,13 @@ rescue ::ActiveRecord::ConnectionNotEstablished
       t.text :interpolations
       t.boolean :is_proc, default: false
     end
-    add_index :translations, [:locale, :key], unique: true
+    add_index :translations, %i[locale key], unique: true
   end
 end
 
 TEST_CASE = defined?(Minitest::Test) ? Minitest::Test : MiniTest::Unit::TestCase
 
-class TEST_CASE
+class TEST_CASE # rubocop:disable Naming/ClassAndModuleCamelCase
   alias assert_raise assert_raises
   alias assert_not_equal refute_equal
 
@@ -61,31 +61,33 @@ class TEST_CASE
   end
 end
 
-class I18n::TestCase < TEST_CASE
-  def setup
-    I18n.enforce_available_locales = false
-    I18n.available_locales = []
-    I18n.locale = :en
-    I18n.default_locale = :en
-    I18n.load_path = []
-    super
-  end
+module I18n
+  class TestCase < TEST_CASE
+    def setup
+      I18n.enforce_available_locales = false
+      I18n.available_locales = []
+      I18n.locale = :en
+      I18n.default_locale = :en
+      I18n.load_path = []
+      super
+    end
 
-  def teardown
-    I18n.enforce_available_locales = false
-    I18n.available_locales = []
-    I18n.locale = :en
-    I18n.default_locale = :en
-    I18n.load_path = []
-    I18n.backend = nil
-    super
-  end
+    def teardown
+      I18n.enforce_available_locales = false
+      I18n.available_locales = []
+      I18n.locale = :en
+      I18n.default_locale = :en
+      I18n.load_path = []
+      I18n.backend = nil
+      super
+    end
 
-  def store_translations(locale, data)
-    I18n.backend.store_translations(locale, data)
-  end
+    def store_translations(locale, data)
+      I18n.backend.store_translations(locale, data)
+    end
 
-  def locales_dir
-    File.dirname(__FILE__) + '/test_data/locales'
+    def locales_dir
+      "#{File.dirname(__FILE__)}/test_data/locales"
+    end
   end
 end

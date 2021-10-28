@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #  This extension stores translation stub records for missing translations to
 #  the database.
 #

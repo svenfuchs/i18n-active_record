@@ -1,2 +1,4 @@
 /pkg/
 .ruby-version
+gemfiles/*.lock
+Gemfile.lock

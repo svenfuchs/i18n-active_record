@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_record'
 
 module I18n
@@ -65,8 +67,8 @@ module I18n
             keys = Array(keys).map!(&:to_s)
 
             unless separator.empty?
-              warn "[DEPRECATION] Giving a separator to Translation.lookup is deprecated. " <<
-                "You can change the internal separator by overwriting FLATTEN_SEPARATOR."
+              warn '[DEPRECATION] Giving a separator to Translation.lookup is deprecated. ' \
+                   'You can change the internal separator by overwriting FLATTEN_SEPARATOR.'
             end
 
             namespace = "#{keys.last}#{I18n::Backend::Flatten::FLATTEN_SEPARATOR}%"
@@ -84,7 +86,7 @@ module I18n
               keys.each.with_index.inject(locale_hash) do |iterator, (key_part, index)|
                 key = key_part.to_sym
                 iterator[key] = keys[index + 1] ? (iterator[key] || {}) : t.value
-                iterator[key]
+                iterator[key] # rubocop:disable Lint/UnmodifiedReduceAccumulator
               end
             end
           end
@@ -108,9 +110,10 @@ module I18n
         end
 
         def value=(value)
-          if value === false
+          case value
+          when false
             value = FALSY_CHAR
-          elsif value === true
+          when true
             value = TRUTHY_CHAR
           end
 

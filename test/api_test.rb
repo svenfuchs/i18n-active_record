@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class I18nActiveRecordApiTest < I18n::TestCase
@@ -24,7 +26,7 @@ class I18nActiveRecordApiTest < I18n::TestCase
   include I18n::Tests::Localization::Time
   include I18n::Tests::Localization::Procs if can_store_procs?
 
-  test "make sure we use an ActiveRecord backend" do
+  test 'make sure we use an ActiveRecord backend' do
     assert_equal I18n::Backend::ActiveRecord, I18n.backend.class
   end
 end

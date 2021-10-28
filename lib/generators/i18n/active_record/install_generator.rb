@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails/generators/active_record'
 
 module I18n
   module ActiveRecord
     module Generators
       class  InstallGenerator < ::ActiveRecord::Generators::Base
-        desc "Installs i18n-active_record and generates the necessary migrations"
+        desc 'Installs i18n-active_record and generates the necessary migrations'
 
         argument :name, type: :string, default: 'Translation'
 

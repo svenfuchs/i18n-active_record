@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This module is intended to be mixed into the ActiveRecord backend to allow
 # storing Ruby Procs as translation values in the database.
 #
@@ -21,13 +23,13 @@ module I18n
   module Backend
     class ActiveRecord
       module StoreProcs
-        def value=(v)
-          case v
+        def value=(val)
+          case val
           when Proc
-            write_attribute(:value, v.to_ruby)
+            write_attribute(:value, val.to_ruby)
             write_attribute(:is_proc, true)
           else
-            write_attribute(:value, v)
+            write_attribute(:value, val)
           end
         end
 
@@ -36,4 +38,3 @@ module I18n
     end
   end
 end
-

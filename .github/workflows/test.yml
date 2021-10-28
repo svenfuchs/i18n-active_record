@@ -1,4 +1,4 @@
-name: CI Tests
+name: Test
 
 on:
   push:
@@ -36,13 +36,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        ruby: [2.4, 2.5, 2.6, 2.7, 3.0, 'head']
+        ruby: [2.5, 2.6, 2.7, 3.0, 'head']
         rails: [4, 5, 6, 'head']
         exclude:
-          - ruby: 2.4
-            rails: 6
-          - ruby: 2.4
-            rails: head
           - ruby: 2.5
             rails: head
           - ruby: 2.6
@@ -60,14 +56,14 @@ jobs:
     name: 'Ruby: ${{ matrix.ruby }}, Rails: ${{ matrix.rails }}'
     runs-on: ubuntu-latest
     env:
-      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/Gemfile.rails_${{ matrix.rails }}
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/rails_${{ matrix.rails }}.gemfile
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-          cache-version: 1
+          cache-version: 2
       - name: Run tests for SQLite
         run: bundle exec rake
       - name: Run tests for PostgreSQL

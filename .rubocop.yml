@@ -1,0 +1,31 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'gemfiles/*'
+  NewCops: enable
+  SuggestExtensions: false
+  TargetRubyVersion: 2.5
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Metrics/ClassLength:
+  Exclude:
+    - 'test/*'
+
+Style/Documentation:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
