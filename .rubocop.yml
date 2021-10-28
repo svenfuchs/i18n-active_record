@@ -25,3 +25,6 @@ Metrics/ClassLength:
 Style/Documentation:
   Enabled: false
 
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
