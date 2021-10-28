@@ -2,6 +2,8 @@
 
 appraise 'rails-4' do
   gem 'activerecord', '~> 4.2.0'
+  gem 'mysql2', '~> 0.4.10'
+  gem 'sqlite3', '~> 1.3.13'
   gem 'pg', '~> 0.18.0'
 end
 
