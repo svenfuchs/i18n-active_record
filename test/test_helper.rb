@@ -52,7 +52,7 @@ end
 
 TEST_CASE = defined?(Minitest::Test) ? Minitest::Test : MiniTest::Unit::TestCase
 
-class TEST_CASE # rubocop:disable Naming::ClassAndModuleCamelCase
+class TEST_CASE # rubocop:disable Naming/ClassAndModuleCamelCase
   alias assert_raise assert_raises
   alias assert_not_equal refute_equal
 
