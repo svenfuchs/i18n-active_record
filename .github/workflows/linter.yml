@@ -16,5 +16,7 @@ jobs:
         env:
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          LINTER_RULES_PATH: /
           VALIDATE_MARKDOWN: false
           RUBY_CONFIG_FILE: .rubocop.yml
