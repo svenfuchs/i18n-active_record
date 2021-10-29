@@ -1,6 +1,6 @@
 # I18n::Backend::ActiveRecord [![Ruby Style Guide](https://img.shields.io/badge/code_style-rubocop-brightgreen.svg)](https://github.com/rubocop/rubocop) [![Tests Status](https://github.com/svenfuchs/i18n-active_record/actions/workflows/test.yml/badge.svg)](https://github.com/svenfuchs/i18n-active_record/actions) [![Linter Status](https://github.com/svenfuchs/i18n-active_record/actions/workflows/linter.yml/badge.svg)](https://github.com/svenfuchs/i18n-active_record/actions)
 
-This repository contains the I18n ActiveRecord backend and support code that has been extracted from the "I18n": http://github.com/svenfuchs/i18n.
+This repository contains the I18n ActiveRecord backend and support code that has been extracted from the `I18n` gem: http://github.com/svenfuchs/i18n.
 It is fully compatible with Rails 4, 5 and 6.
 
 ## Installation
@@ -45,7 +45,7 @@ By default the installer creates a new file in `config/initializers` named `i18n
 ```ruby
 require 'i18n/backend/active_record'
 
-Translation  = I18n::Backend::ActiveRecord::Translation
+Translation = I18n::Backend::ActiveRecord::Translation
 
 if Translation.table_exists?
   I18n.backend = I18n::Backend::ActiveRecord.new
@@ -95,7 +95,7 @@ You can now use `I18n.t('Your String')` to lookup translations in the database.
 
 In order to make the `I18n::Backend::ActiveRecord::Missing` module working correctly pluralization rules should be configured properly.
 The `i18n.plural.keys` translation key should be present in any of the backends.
-(See https://github.com/svenfuchs/i18n-active_record/blob/master/lib/i18n/backend/active_record/missing.rb for more information)
+See https://github.com/svenfuchs/i18n-active_record/blob/master/lib/i18n/backend/active_record/missing.rb for more information.
 
 ```yaml
 en:
