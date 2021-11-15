@@ -162,5 +162,14 @@ class I18nBackendActiveRecordTest < I18n::TestCase
 
       I18n::Backend::ActiveRecord.config.cache_translations = true
     end
+
+    test 'reinitialization when the DB is empty' do
+      I18n::Backend::ActiveRecord::Translation.destroy_all
+
+      I18n.backend.init_translations
+      I18n.backend.expects(:init_translations).never
+
+      I18n.t('foo')
+    end
   end
 end
