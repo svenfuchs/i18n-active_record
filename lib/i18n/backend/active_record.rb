@@ -28,7 +28,8 @@ module I18n
       end
 
       module Implementation
-        include Base, Flatten
+        include Base
+        include Flatten
 
         def available_locales
           Translation.available_locales
@@ -42,7 +43,7 @@ module I18n
           flatten_translations(locale, data, escape, false).each do |key, value|
             translation = Translation.locale(locale).lookup(expand_keys(key))
 
-            if ActiveRecord.config.cleanup_with_destroy
+            if self.class.config.cleanup_with_destroy
               translation.destroy_all
             else
               translation.delete_all
@@ -51,7 +52,7 @@ module I18n
             Translation.create(locale: locale.to_s, key: key.to_s, value: value)
           end
 
-          reload! if ActiveRecord.config.cache_translations
+          reload! if self.class.config.cache_translations
         end
 
         def reload!
@@ -73,16 +74,14 @@ module I18n
           @translations ||= {}
         end
 
-      protected
+        protected
 
         def lookup(locale, key, scope = [], options = {})
           key = normalize_flat_keys(locale, key, scope, options[:separator])
           key = key[1..-1] if key.first == '.'
           key = key[0..-2] if key.last == '.'
 
-          if ActiveRecord.config.cache_translations
-            init_translations if @translations.nil? || @translations.empty?
-
+          if self.class.config.cache_translations
             keys = ([locale] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
 
             return translations.dig(*keys)
