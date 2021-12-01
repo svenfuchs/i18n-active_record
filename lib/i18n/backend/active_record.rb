@@ -21,9 +21,7 @@ module I18n
         end
       end
 
-      def initialize(*args)
-        super
-
+      def initialize
         reload!
       end
 
