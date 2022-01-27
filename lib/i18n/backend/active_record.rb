@@ -97,9 +97,9 @@ module I18n
             result.first.value
           else
             result = result.inject({}) do |hash, translation|
-              hash.deep_merge build_translation_hash_by_key(key, translation)
+              Utils.deep_merge(hash, build_translation_hash_by_key(key, translation))
             end
-            result.deep_symbolize_keys
+            Utils.deep_symbolize_keys(result)
           end
         end
 
