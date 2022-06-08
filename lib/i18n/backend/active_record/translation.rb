@@ -79,7 +79,7 @@ module I18n
             Translation.select('DISTINCT locale').to_a.map { |t| t.locale.to_sym }
           end
 
-          def to_hash
+          def to_h
             Translation.all.each.with_object({}) do |t, memo|
               locale_hash = (memo[t.locale.to_sym] ||= {})
               keys = t.key.split('.')
