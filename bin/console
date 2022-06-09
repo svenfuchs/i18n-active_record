@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'i18n/active_record'
+
+require 'irb'
+IRB.start
