@@ -16,21 +16,21 @@ rescue LoadError => e
 rescue ::ActiveRecord::ConnectionNotEstablished
   require 'i18n/backend/active_record'
 
-  case ENV['DB']
+  case ENV.fetch('DB', nil)
   when 'postgres'
     ::ActiveRecord::Base.establish_connection(
       adapter: 'postgresql',
       database: 'i18n_unittest',
-      username: ENV['PG_USER'] || 'postgres',
-      password: ENV['PG_PASSWORD'] || 'postgres',
+      username: ENV.fetch('PG_USER', 'postgres'),
+      password: ENV.fetch('PG_PASSWORD', 'postgres'),
       host: 'localhost'
     )
   when 'mysql'
     ::ActiveRecord::Base.establish_connection(
       adapter: 'mysql2',
       database: 'i18n_unittest',
-      username: ENV['MYSQL_USER'] || 'root',
-      password: ENV['MYSQL_PASSWORD'] || '',
+      username: ENV.fetch('MYSQL_USER', 'root'),
+      password: ENV.fetch('MYSQL_PASSWORD', ''),
       host: '127.0.0.1'
     )
   else

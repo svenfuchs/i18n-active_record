@@ -15,6 +15,10 @@ appraise 'rails-6' do
   gem 'activerecord', '~> 6.1.0'
 end
 
+appraise 'rails-7' do
+  gem 'activerecord', '~> 7.0.0'
+end
+
 appraise 'rails-head' do
   gem 'activerecord', github: 'rails/rails', branch: 'main'
 end
