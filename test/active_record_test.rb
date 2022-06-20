@@ -154,6 +154,14 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_equal expected_hash, I18n.backend.send(:translations, do_init: true)
       assert I18n.backend.initialized?
     end
+
+    test 'implicit hash conversion' do
+      proc = ->(scope = nil, all_queries: nil) {}
+
+      assert_nothing_raised do
+        proc.call(I18n::Backend::ActiveRecord::Translation)
+      end
+    end
   end
 
   class WithCacheTest < WithoutCacheTest
