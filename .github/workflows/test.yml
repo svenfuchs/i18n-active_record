@@ -36,11 +36,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        ruby: [2.5, 2.6, 2.7, '3.0', 'head']
-        rails: [4, 5, 6, 'head']
+        ruby: [2.5, 2.6, 2.7, '3.0', 3.1, 'head']
+        rails: [4, 5, 6, 7, 'head']
         exclude:
           - ruby: 2.5
+            rails: 7
+          - ruby: 2.5
             rails: head
+          - ruby: 2.6
+            rails: 7
           - ruby: 2.6
             rails: head
           - ruby: 2.7
@@ -49,13 +53,14 @@ jobs:
             rails: 4
           - ruby: '3.0'
             rails: 5
+          - ruby: 3.1
+            rails: 4
+          - ruby: 3.1
+            rails: 5
           - ruby: head
             rails: 4
           - ruby: head
             rails: 5
-        include:
-          - ruby: 3.1
-            rails: 7
     name: 'Ruby: ${{ matrix.ruby }}, Rails: ${{ matrix.rails }}'
     runs-on: ubuntu-latest
     env:
