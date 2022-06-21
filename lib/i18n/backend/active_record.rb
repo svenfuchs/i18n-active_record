@@ -64,7 +64,7 @@ module I18n
         end
 
         def init_translations
-          @translations = Translation.to_hash
+          @translations = Translation.to_h
         end
 
         def translations(do_init: false)
