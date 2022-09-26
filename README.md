@@ -115,7 +115,7 @@ The `interpolations` field is otherwise unused since the "value" in `Translation
 
 ## Examples
 
-* http://collectiveidea.com/blog/archives/2016/05/31/beyond-yml-files-dynamic-translations/
+* http://collectiveidea.com/blog/archives/2016/05/31/beyond-yml-files-dynamic-translations/ ([use `before_action`](https://github.com/svenfuchs/i18n-active_record/issues/138) for Rails 5.1+)
 
 ## Contributing
 
