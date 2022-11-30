@@ -85,6 +85,16 @@ I18n::Backend::ActiveRecord.configure do |config|
 end
 ```
 
+The ActiveRecord backend can be configured to use a `scope` to isolate sets of translations. That way, two applications
+using the backend with the same database table can use translation data independently of one another.
+If configured with a scope, all data used will be limited to records with that particular scope identifier:
+
+```ruby
+I18n::Backend::ActiveRecord.configure do |config|
+  config.scope = 'app1' # defaults to nil, disabling scope
+end
+```
+
 ## Usage
 
 You can now use `I18n.t('Your String')` to lookup translations in the database.

@@ -55,11 +55,22 @@ module I18n
 
         serialize :value
         serialize :interpolations, Array
+        before_validation :set_scope
         after_commit :invalidate_translations_cache
+
+        default_scope { scoped }
 
         class << self
           def locale(locale)
             where(locale: locale.to_s)
+          end
+
+          def scoped
+            if (record_scope = ActiveRecord.config.scope)
+              where(scope: record_scope)
+            else
+              all
+            end
           end
 
           def lookup(keys, *separator)
@@ -122,6 +133,12 @@ module I18n
 
         def invalidate_translations_cache
           I18n.backend.reload! if I18n::Backend::ActiveRecord.config.cache_translations
+        end
+
+        private
+
+        def set_scope
+          self.scope ||= ActiveRecord.config.scope if ActiveRecord.config.scope
         end
       end
     end
