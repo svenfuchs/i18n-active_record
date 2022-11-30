@@ -191,4 +191,35 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_equal I18n.t(:foo), 'custom foo'
     end
   end
+
+  class ScopeTest < I18nBackendActiveRecordTest
+    def setup
+      super
+
+      I18n::Backend::ActiveRecord.config.scope = 'scope1'
+    end
+
+    test 'scope config option divides translations into isolated sets' do
+      store_translations(:en, foo: 'foo1')
+      assert_equal('foo1', I18n.t(:foo))
+
+      I18n::Backend::ActiveRecord.config.scope = 'scope2'
+      store_translations(:en, foo: 'foo2')
+      assert_equal('foo2', I18n.t(:foo))
+
+      I18n::Backend::ActiveRecord.config.scope = 'scope1'
+      assert_equal('foo1', I18n.t(:foo))
+    end
+
+    test 'scope config of nil disables scope' do
+      store_translations(:en, bar1: 'bar1')
+
+      I18n::Backend::ActiveRecord.config.scope = 'scope2'
+      store_translations(:en, bar2: 'bar2')
+
+      I18n::Backend::ActiveRecord.config.scope = nil
+      assert_equal('bar1', I18n.t(:bar1))
+      assert_equal('bar2', I18n.t(:bar2))
+    end
+  end
 end

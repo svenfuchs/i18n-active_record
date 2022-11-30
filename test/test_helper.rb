@@ -40,13 +40,14 @@ rescue ActiveRecord::ConnectionNotEstablished
   ActiveRecord::Migration.verbose = false
   ActiveRecord::Schema.define(version: 1) do
     create_table :translations, force: true do |t|
+      t.string :scope
       t.string :locale
       t.string :key
       t.text :value
       t.text :interpolations
       t.boolean :is_proc, default: false
     end
-    add_index :translations, %i[locale key], unique: true
+    add_index :translations, %i[scope locale key], unique: true
   end
 
   if ActiveRecord::Base.respond_to?(:yaml_column_permitted_classes=)
