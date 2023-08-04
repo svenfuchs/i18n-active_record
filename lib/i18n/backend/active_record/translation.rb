@@ -53,8 +53,14 @@ module I18n
 
         self.table_name = 'translations'
 
-        serialize :value
-        serialize :interpolations, Array
+        if ::ActiveRecord.version < '6'
+          serialize :value
+          serialize :interpolations, Array
+        else
+          serialize :value, coder: YAML
+          serialize :interpolations, coder: YAML, type: Array
+        end
+
         after_commit :invalidate_translations_cache
 
         class << self
