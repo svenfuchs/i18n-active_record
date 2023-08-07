@@ -53,7 +53,7 @@ module I18n
 
         self.table_name = 'translations'
 
-        if ::ActiveRecord.version < '6'
+        if ::ActiveRecord.version < Gem::Version.new('6')
           serialize :value
           serialize :interpolations, Array
         else
