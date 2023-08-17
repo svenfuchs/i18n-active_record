@@ -123,7 +123,7 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       I18n.t('.') # Fixes test flakiness by loading available locales
       I18n::Backend::ActiveRecord::Translation.destroy_all
 
-      assert_equal 'translation missing: en.no key', I18n.t('.')
+      assert_match(/[Tt]ranslation missing: en\.no key/, I18n.t('.'))
     end
 
     test 'intially unitinitialized' do
