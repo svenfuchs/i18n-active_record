@@ -2,3 +2,4 @@
 .ruby-version
 gemfiles/*.lock
 Gemfile.lock
+.rake_tasks
