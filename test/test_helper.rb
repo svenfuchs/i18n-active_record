@@ -10,15 +10,15 @@ require 'i18n/tests'
 
 begin
   require 'active_record'
-  ::ActiveRecord::Base.connection
+  ActiveRecord::Base.connection
 rescue LoadError => e
   puts "can't use ActiveRecord backend because: #{e.message}"
-rescue ::ActiveRecord::ConnectionNotEstablished
+rescue ActiveRecord::ConnectionNotEstablished
   require 'i18n/backend/active_record'
 
   case ENV.fetch('DB', nil)
   when 'postgres'
-    ::ActiveRecord::Base.establish_connection(
+    ActiveRecord::Base.establish_connection(
       adapter: 'postgresql',
       database: 'i18n_unittest',
       username: ENV.fetch('PG_USER', 'postgres'),
@@ -26,7 +26,7 @@ rescue ::ActiveRecord::ConnectionNotEstablished
       host: 'localhost'
     )
   when 'mysql'
-    ::ActiveRecord::Base.establish_connection(
+    ActiveRecord::Base.establish_connection(
       adapter: 'mysql2',
       database: 'i18n_unittest',
       username: ENV.fetch('MYSQL_USER', 'root'),
@@ -34,11 +34,11 @@ rescue ::ActiveRecord::ConnectionNotEstablished
       host: '127.0.0.1'
     )
   else
-    ::ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
+    ActiveRecord::Base.establish_connection adapter: 'sqlite3', database: ':memory:'
   end
 
-  ::ActiveRecord::Migration.verbose = false
-  ::ActiveRecord::Schema.define(version: 1) do
+  ActiveRecord::Migration.verbose = false
+  ActiveRecord::Schema.define(version: 1) do
     create_table :translations, force: true do |t|
       t.string :locale
       t.string :key
