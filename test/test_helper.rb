@@ -48,6 +48,7 @@ rescue ActiveRecord::ConnectionNotEstablished
     end
     add_index :translations, %i[locale key], unique: true
   end
+  ActiveRecord::Base.yaml_column_permitted_classes = [Symbol]
 end
 
 TEST_CASE = defined?(Minitest::Test) ? Minitest::Test : MiniTest::Unit::TestCase
