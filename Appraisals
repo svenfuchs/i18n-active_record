@@ -9,6 +9,7 @@ end
 
 appraise 'rails-5' do
   gem 'activerecord', '~> 5.2.0'
+  gem 'psych', '~> 3.1'
 end
 
 appraise 'rails-6' do
