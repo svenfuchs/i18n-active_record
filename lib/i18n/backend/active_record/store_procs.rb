@@ -33,7 +33,9 @@ module I18n
           end
         end
 
-        Translation.send(:include, self) if method(:to_s).respond_to?(:to_ruby)
+        if method(:to_s).respond_to?(:to_ruby)
+          I18n::Backend::ActiveRecord.config.translation_model.send(:include, self)
+        end
       end
     end
   end

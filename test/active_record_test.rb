@@ -172,4 +172,23 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       I18n.t('foo')
     end
   end
+
+  class WithCustomTranslationModel < I18nBackendActiveRecordTest
+    class CustomTranslation < I18n::Backend::ActiveRecord::Translation
+      def value=(v)
+        super("custom #{v}")
+      end
+    end
+
+    def setup
+      super
+
+      I18n::Backend::ActiveRecord.config.translation_model = CustomTranslation
+    end
+
+    test 'use a custom model' do
+      store_translations(:en, foo: 'foo')
+      assert_equal I18n.t(:foo), 'custom foo'
+    end
+  end
 end

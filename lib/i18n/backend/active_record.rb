@@ -2,6 +2,7 @@
 
 require 'i18n/backend/base'
 require 'i18n/backend/active_record/translation'
+require 'pry-byebug'
 
 module I18n
   module Backend
@@ -25,12 +26,19 @@ module I18n
         reload!
       end
 
+      module TranslationModel
+        private def translation_model
+          I18n::Backend::ActiveRecord.config.translation_model
+        end
+      end
+
       module Implementation
         include Base
         include Flatten
+        include TranslationModel
 
         def available_locales
-          Translation.available_locales
+          translation_model.available_locales
         rescue ::ActiveRecord::StatementInvalid
           []
         end
@@ -39,7 +47,7 @@ module I18n
           escape = options.fetch(:escape, true)
 
           flatten_translations(locale, data, escape, false).each do |key, value|
-            translation = Translation.locale(locale).lookup(expand_keys(key))
+            translation = translation_model.locale(locale).lookup(expand_keys(key))
 
             if self.class.config.cleanup_with_destroy
               translation.destroy_all
@@ -47,7 +55,7 @@ module I18n
               translation.delete_all
             end
 
-            Translation.create(locale: locale.to_s, key: key.to_s, value: value)
+            translation_model.create(locale: locale.to_s, key: key.to_s, value: value)
           end
 
           reload! if self.class.config.cache_translations
@@ -64,7 +72,7 @@ module I18n
         end
 
         def init_translations
-          @translations = Translation.to_h
+          @translations = translation_model.to_h
         end
 
         def translations(do_init: false)
@@ -86,9 +94,9 @@ module I18n
           end
 
           result = if key == ''
-            Translation.locale(locale).all
+            translation_model.locale(locale).all
           else
-            Translation.locale(locale).lookup(key)
+            translation_model.locale(locale).lookup(key)
           end
 
           if result.empty?
