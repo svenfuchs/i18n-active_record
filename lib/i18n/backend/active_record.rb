@@ -2,7 +2,6 @@
 
 require 'i18n/backend/base'
 require 'i18n/backend/active_record/translation'
-require 'pry-byebug'
 
 module I18n
   module Backend
