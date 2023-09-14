@@ -175,8 +175,8 @@ class I18nBackendActiveRecordTest < I18n::TestCase
 
   class WithCustomTranslationModel < I18nBackendActiveRecordTest
     class CustomTranslation < I18n::Backend::ActiveRecord::Translation
-      def value=(v)
-        super("custom #{v}")
+      def value=(val)
+        super("custom #{val}")
       end
     end
 
