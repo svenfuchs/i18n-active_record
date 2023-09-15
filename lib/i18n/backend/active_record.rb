@@ -26,7 +26,9 @@ module I18n
       end
 
       module TranslationModel
-        private def translation_model
+        private
+
+        def translation_model
           I18n::Backend::ActiveRecord.config.translation_model
         end
       end
