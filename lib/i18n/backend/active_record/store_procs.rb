@@ -23,6 +23,8 @@ module I18n
   module Backend
     class ActiveRecord
       module StoreProcs
+        extend TranslationModel
+
         def value=(val)
           case val
           when Proc
@@ -33,7 +35,7 @@ module I18n
           end
         end
 
-        Translation.send(:include, self) if method(:to_s).respond_to?(:to_ruby)
+        translation_model.send(:include, self) if method(:to_s).respond_to?(:to_ruby)
       end
     end
   end

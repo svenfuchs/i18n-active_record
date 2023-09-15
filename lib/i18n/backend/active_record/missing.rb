@@ -36,13 +36,14 @@ module I18n
     class ActiveRecord
       module Missing
         include Flatten
+        include TranslationModel
 
         def store_default_translations(locale, key, options = {})
           count, scope, _, separator = options.values_at(:count, :scope, :default, :separator)
           separator ||= I18n.default_separator
           key = normalize_flat_keys(locale, key, scope, separator)
 
-          return if ActiveRecord::Translation.locale(locale).lookup(key).exists?
+          return if translation_model.locale(locale).lookup(key).exists?
 
           interpolations = options.keys - I18n::RESERVED_KEYS
           keys = count ? I18n.t('i18n.plural.keys', locale: locale).map { |k| [key, k].join(FLATTEN_SEPARATOR) } : [key]
@@ -50,7 +51,7 @@ module I18n
         end
 
         def store_default_translation(locale, key, interpolations)
-          translation = ActiveRecord::Translation.new locale: locale.to_s, key: key
+          translation = translation_model.new locale: locale.to_s, key: key
           translation.interpolations = interpolations
           translation.save
         end
