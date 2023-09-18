@@ -89,11 +89,26 @@ end
 
 You can now use `I18n.t('Your String')` to lookup translations in the database.
 
+## Custom translation model
+
+By default, the gem relies on [the built-in translation model](https://github.com/svenfuchs/i18n-active_record/blob/master/lib/i18n/backend/active_record/translation.rb).  
+However, to extend the default functionality, the translation model can be customized:
+
+```ruby
+class MyTranslation < I18n::Backend::ActiveRecord::Translation
+  def value=(val)
+    super("custom #{val}")
+  end
+end
+
+I18n::Backend::ActiveRecord.configure do |config|
+  config.translation_model = MyTranslation
+end
+```
+
 ## Missing Translations
 
-### Usage
-
-In order to make the `I18n::Backend::ActiveRecord::Missing` module working correctly pluralization rules should be configured properly.
+To make the `I18n::Backend::ActiveRecord::Missing` module working correctly pluralization rules should be configured properly.
 The `i18n.plural.keys` translation key should be present in any of the backends.
 See https://github.com/svenfuchs/i18n-active_record/blob/master/lib/i18n/backend/active_record/missing.rb for more information.
 
