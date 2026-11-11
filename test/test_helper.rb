@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'logger' # Rails 6.1 expects it to be loaded, recent concurrent-ruby no longer does that
 require 'minitest/autorun'
 require 'mocha/minitest'
 require 'test_declarative'
@@ -29,6 +30,7 @@ rescue ActiveRecord::ConnectionNotEstablished
     ActiveRecord::Base.establish_connection(
       adapter: 'mysql2',
       database: 'i18n_unittest',
+      encoding: 'utf8mb4',
       username: ENV.fetch('MYSQL_USER', 'root'),
       password: ENV.fetch('MYSQL_PASSWORD', ''),
       host: '127.0.0.1'
