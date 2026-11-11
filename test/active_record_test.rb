@@ -96,6 +96,10 @@ class I18nBackendActiveRecordTest < I18n::TestCase
       assert_equal I18n.t(:foo), { bar: { fizz: 'buzz', spuz: 'zazz' }, baz: { fizz: 'buzz' } }
     end
 
+    test 'lookup of a key nested under a translation returns nothing' do
+      assert_equal 'default', I18n.t('foo.bar.baz', default: 'default')
+    end
+
     test 'build_translation_hash_by_key' do
       translation = I18n::Backend::ActiveRecord::Translation.new(value: 'translation', key: 'foo.bar.fizz.buzz')
       expected_hash = { 'bar' => { 'fizz' => { 'buzz' => 'translation' } } }

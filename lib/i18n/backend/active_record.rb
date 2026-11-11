@@ -91,7 +91,7 @@ module I18n
           if self.class.config.cache_translations
             keys = ([locale] + key.split(I18n::Backend::Flatten::FLATTEN_SEPARATOR)).map(&:to_sym)
 
-            return translations.dig(*keys)
+            return lookup_in_cache(keys)
           end
 
           result = if key == ''
@@ -110,6 +110,10 @@ module I18n
             end
             result.deep_symbolize_keys
           end
+        end
+
+        def lookup_in_cache(keys)
+          keys.inject(translations) { |node, part| node[part] if node.is_a?(Hash) }
         end
 
         def build_translation_hash_by_key(lookup_key, translation)
